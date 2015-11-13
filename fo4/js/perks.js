@@ -967,7 +967,7 @@
             {
                 rank: 10,
                 name: 'Intimidation',
-                img: 'Intimidation.png',
+                img: 'intimidation.png',
                 ranks: 3,
                 ranked: [
                     {
