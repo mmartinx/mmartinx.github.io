@@ -1,0 +1,30 @@
+﻿.list-special .list-group-item::first-letter {
+    font-weight: bold;
+}
+
+.list-special input {
+    display: inline-block;
+    width: 60px;
+}
+
+.unavailable {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}
+
+.perk {
+    width: 86px;
+    height: 86px;
+    border:1px solid black;
+    position:relative;
+}
+
+.overlay {
+    bottom:10px;
+    position:absolute;
+    width:100%;
+    text-align:center;
+    color:#FFF;
+    font-weight:bold;
+    background-color: rgba(0,0,0, 0.6)    /* 40% opaque red */  
+}
