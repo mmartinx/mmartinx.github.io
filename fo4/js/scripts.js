@@ -37,6 +37,37 @@ var renderPerks = function () {
     $('.table').html(html);
 }
 
+var getJSON = function () {
+    return JSON.stringify({
+        s: getSPECIALShort(),
+        r: getRanks()
+    });
+}
+
+var getRanks = function () {
+    var ranks = [];
+    for (var i = 0; i < perks.length; ++i) {
+        for (var j = 0; j < perks[i].perks.length; ++j) {
+            var perk = perks[i].perks[j];
+            if (perk.currentRank && perk.currentRank > 0) {
+                var item = {};
+                item[perk.name] = perk.currentRank;
+                ranks.push(item);
+            }
+        }
+    }
+
+    return ranks;
+}
+
+var getSPECIALShort = function () {
+    var specs = [];
+    $('input[type="number"]').each(function () {
+        specs.push($(this).val());
+    });
+    return specs;
+};
+
 var getSPECIAL = function () {
     return $('[data-special]').map(function () {
         return {
@@ -80,6 +111,7 @@ var renderAll = function () {
     calculatePoints();
     renderRequiredLevel();
     renderSummary();
+    window.location.hash = '#' + getJSON();
 }
 
 var calculatePoints = function () {
@@ -130,6 +162,28 @@ var renderSummary = function () {
 }
 
 $(function () {
+    var hash = window.location.hash.replace('#', '');
+    if (hash.length > 0) {
+        var load = JSON.parse(hash);
+        $('input[type=number]').each(function (index) {
+            $(this).val(load.s[index]);
+        });
+
+        for (var i = 0; i < load.r.length; ++i) {
+            var key = Object.keys(load.r[i])[0],
+                value = load.r[i][key];
+
+            for (var j = 0; j < perks.length; ++j) {
+                for (var k = 0; k < perks[j].perks.length; ++k) {
+                    var perk = perks[j].perks[k];
+                    if (perk.name === key) {
+                        perk.currentRank = value;
+                    }
+                }
+            }
+        }
+    }
+
     renderAll();
 
     $includeBobbleheads.on('click', function () {
