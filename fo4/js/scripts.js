@@ -85,6 +85,11 @@ var requiredLevel = function () {
         }
     }
 
+    var remaining = totalPoints - getAllocatedPoints();
+    if (remaining < 0) {
+        total += remaining * -1;
+    }
+
     var maxLevel = 0;
     for (var i = 0; i < perks.length; ++i) {
         for (var j = 0; j < perks[i].perks.length; ++j) {
@@ -116,8 +121,11 @@ var renderAll = function () {
 
 var calculatePoints = function () {
     var remaining = totalPoints - getAllocatedPoints();
-    if (includeBobbleheads()) {
-        remaining += 7;
+    //if (includeBobbleheads()) {
+    //    remaining += 7;
+    //}
+    if (remaining < 0) {
+        remaining = 0;
     }
     $pointsLeft.text(remaining);
 }
@@ -130,12 +138,12 @@ var getAllocatedPoints = function () {
     });
 }
 
-var $pointsLeft = $('.points-left'),
-        $includeBobbleheads = $('.include-bobbleheads');
+var $pointsLeft = $('.points-left');
+        //$includeBobbleheads = $('.include-bobbleheads');
 
-var includeBobbleheads = function () {
-    return $includeBobbleheads.is(':checked');
-}
+//var includeBobbleheads = function () {
+//    return $includeBobbleheads.is(':checked');
+//}
 
 var pointsRemaining = function () {
     return parseInt($pointsLeft.text());
@@ -186,18 +194,18 @@ $(function () {
 
     renderAll();
 
-    $includeBobbleheads.on('click', function () {
-        renderAll();
-    });
+    //$includeBobbleheads.on('click', function () {
+    //    renderAll();
+    //});
 
     $('.btn-inc').on('click', function () {
         var $li = $(this).parent().parent(),
             $input = $li.find('input'),
             value = parseInt($input.val()),
-            remaining = pointsRemaining();
+            remaining = totalPoints - getAllocatedPoints();
 
-        if (remaining === 0)
-            return;
+        //if (remaining === 0)
+        //    return;
 
         if (value < 10) {
             $input.val(value + 1);
