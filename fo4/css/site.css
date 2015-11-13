@@ -28,3 +28,15 @@
     font-weight:bold;
     background-color: rgba(0,0,0, 0.6)    /* 40% opaque red */  
 }
+
+.has-rank {
+    font-size:12px;
+    background-color:rgba(92,184,92, 0.80);
+    padding:3px;
+    border-radius:3px;
+    color:#fff;
+}
+
+.no-rank {
+    font-size:12px;
+}

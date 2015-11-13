@@ -20,15 +20,13 @@ var renderPerks = function () {
                 perk.currentRank = 0;
             }
 
-            var title = perk.name;
-            if (perk.ranked) {
-                title += '\r\n\r\n';
-                title += perk.ranked.map(function (rank) {
-                    return 'Rank ' + rank.rank + ': ' + rank.description;
-                }).join('\r\n');
-            }
+            var title = '';
+            title += perk.ranked.map(function (rank) {
+                var rankClass = perk.currentRank >= rank.rank ? 'has-rank' : 'no-rank';
+                return '<p class=' + rankClass + '>Rank ' + rank.rank + ' (' + rank.level + '): ' + rank.description + '</p>';
+            }).join('');
 
-            html += '<td><div data-i="' + i + '" data-j="' + j + '" title="' + title + '" class="perk' + className + '" style="background-image:url(\'img/' + perk.img + '\');">';
+            html += '<td><div data-placement="left" data-trigger="hover" data-original-title="' + perk.name + '" rel="popover" data-html="true" data-content="' + title + '" data-i="' + i + '" data-j="' + j + '" class="perk' + className + '" style="background-image:url(\'img/' + perk.img + '\');">';
             if (className !== ' unavailable') {
                 html += '<div class="overlay"><button class="btn btn-xs btn-danger btn-dec-perk"><i class="glyphicon glyphicon-minus"></i></button>&nbsp;' + perk.currentRank + '/' + perk.ranks + '&nbsp;<button class="btn btn-xs btn-success btn-inc-perk"><i class="glyphicon glyphicon-plus"></i></button></div>';
             }
@@ -55,6 +53,20 @@ var requiredLevel = function () {
             total += perks[i].perks[j].currentRank;
         }
     }
+
+    var maxLevel = 0;
+    for (var i = 0; i < perks.length; ++i) {
+        for (var j = 0; j < perks[i].perks.length; ++j) {
+            for (var k = 0; k < perks[i].perks[j].currentRank; ++k) {
+                if (perks[i].perks[j].ranked[k].level > maxLevel) {
+                    maxLevel = perks[i].perks[j].ranked[k].level;
+                }
+            }
+        }
+    }
+
+    if (maxLevel > total)
+        total = maxLevel;
 
     return total;
 }
@@ -104,11 +116,17 @@ var renderSummary = function () {
             var perk = perks[i].perks[j];
             if (perk.currentRank && perk.currentRank > 0) {
                 html += '<li>' + perk.name + ': ' + perk.currentRank + '/' + perk.ranks + '</li>';
+                html += '<ul>';
+                for (var k = 0; k < perk.currentRank; ++k) {
+                    html += '<li>' + perk.ranked[k].description + '</li>';
+                }
+                html += '</ul>';
             }
         }
     }
 
     $('.summary').html(html);
+    $('[rel="popover"]').popover();
 }
 
 $(function () {
