@@ -21,14 +21,14 @@ var renderPerks = function () {
             }
 
             var title = '';
-            title += perk.ranks.map(function (rank) {
+            title += perk.ranked.map(function (rank) {
                 var rankClass = perk.currentRank >= rank.rank ? 'has-rank' : 'no-rank';
                 return '<p class=' + rankClass + '>Rank ' + rank.rank + ' (' + rank.level + '): ' + rank.description + '</p>';
             }).join('');
 
             html += '<td><div data-placement="left" data-trigger="hover" data-original-title="' + perk.name + '" rel="popover" data-html="true" data-content="' + title + '" data-i="' + i + '" data-j="' + j + '" class="perk' + className + '" style="background-image:url(\'img/' + perk.img + '\');">';
             if (className !== ' unavailable') {
-                html += '<div class="overlay"><button class="btn btn-xs btn-danger btn-dec-perk"><i class="glyphicon glyphicon-minus"></i></button>&nbsp;' + perk.currentRank + '/' + perk.ranks.length + '&nbsp;<button class="btn btn-xs btn-success btn-inc-perk"><i class="glyphicon glyphicon-plus"></i></button></div>';
+                html += '<div class="overlay"><button class="btn btn-xs btn-danger btn-dec-perk"><i class="glyphicon glyphicon-minus"></i></button>&nbsp;' + perk.currentRank + '/' + perk.ranks + '&nbsp;<button class="btn btn-xs btn-success btn-inc-perk"><i class="glyphicon glyphicon-plus"></i></button></div>';
             }
             html += '</td>';
         }
@@ -94,8 +94,8 @@ var requiredLevel = function () {
     for (var i = 0; i < perks.length; ++i) {
         for (var j = 0; j < perks[i].perks.length; ++j) {
             for (var k = 0; k < perks[i].perks[j].currentRank; ++k) {
-                if (perks[i].perks[j].ranks[k].level > maxLevel) {
-                    maxLevel = perks[i].perks[j].ranks[k].level;
+                if (perks[i].perks[j].ranked[k].level > maxLevel) {
+                    maxLevel = perks[i].perks[j].ranked[k].level;
                 }
             }
         }
@@ -155,10 +155,10 @@ var renderSummary = function () {
         for (var j = 0; j < perks[i].perks.length; ++j) {
             var perk = perks[i].perks[j];
             if (perk.currentRank && perk.currentRank > 0) {
-                html += '<li>' + perk.name + ': ' + perk.currentRank + '/' + perk.ranks.length + '</li>';
+                html += '<li>' + perk.name + ': ' + perk.currentRank + '/' + perk.ranks + '</li>';
                 html += '<ul>';
                 for (var k = 0; k < perk.currentRank; ++k) {
-                    html += '<li>' + perk.ranks[k].description + '</li>';
+                    html += '<li>' + perk.ranked[k].description + '</li>';
                 }
                 html += '</ul>';
             }
@@ -246,7 +246,7 @@ $(function () {
             perk.currentRank = 0;
 
         if (incrementing) {
-            if (perk.currentRank < perk.ranks.length) {
+            if (perk.currentRank < perk.ranks) {
                 perk.currentRank += 1;
             }
         } else {
