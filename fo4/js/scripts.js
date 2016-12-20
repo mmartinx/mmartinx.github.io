@@ -1,4 +1,4 @@
-﻿var totalPoints = 28;
+var totalPoints = 28;
 
 var renderPerks = function () {
     var html = '',
@@ -38,10 +38,10 @@ var renderPerks = function () {
 }
 
 var getJSON = function () {
-    return JSON.stringify({
+    return btoa(JSON.stringify({
         s: getSPECIALShort(),
         r: getRanks()
-    });
+    }));
 }
 
 var getRanks = function () {
@@ -172,7 +172,7 @@ var renderSummary = function () {
 $(function () {
     var hash = window.location.hash.replace('#', '');
     if (hash.length > 0) {
-        var load = JSON.parse(hash);
+        var load = JSON.parse(atob(hash));
         $('input[type=number]').each(function (index) {
             $(this).val(load.s[index]);
         });
