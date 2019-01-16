@@ -156,7 +156,7 @@
                 rank: 6,
                 name: 'Strong Back',
                 img: 'strong-back.png',
-                ranks: 4,
+                ranks: 5,
                 ranked: [
                     {
                         rank: 1,
@@ -177,6 +177,11 @@
                         rank: 4,
                         level: 30,
                         description: 'When overencumbered, you can fast travel.'
+                    },
+                    {
+                        rank: 5,
+                        level: 40,
+                        description: 'When overencumbered, running costs 50% less action points.(Far Harbor DLC)'
                     }
                 ]
             },
@@ -184,7 +189,7 @@
                 rank: 7,
                 name: 'Steady Aim',
                 img: 'steady-aim.png',
-                ranks: 2,
+                ranks: 3,
                 ranked: [
                     {
                         rank: 1,
@@ -195,6 +200,11 @@
                         rank: 2,
                         level: 28,
                         description: 'Hip-fire accuracy is improved even more when firing any gun.'
+                    },
+                    {
+                        rank: 3,
+                        level: 49,
+                        description: 'Hip-fire accuracy is improved when firing any gun.(Nuka-World DLC)'
                     }
                 ]
             },
@@ -342,12 +352,17 @@
                 rank: 3,
                 name: 'Awareness',
                 img: 'awareness.png',
-                ranks: 1,
+                ranks: 2,
                 ranked: [
                     {
                         rank: 1,
                         level: 0,
                         description: 'To defeat your enemies, know their weaknesses! You can view a target\'s specific damage resistances in V.A.T.S.'
+                    },
+                    {
+                        rank: 2,
+                        level: 14,
+                        description: 'Knowing their weaknesses lets you attack more efficiently. 5% increase to hit chance and damage dealt to VATS targets.(Nuka-World DLC)'
                     }
                 ]
             },
@@ -411,7 +426,7 @@
                 rank: 6,
                 name: 'Night Person',
                 img: 'night-person.png',
-                ranks: 2,
+                ranks: 3,
                 ranked: [
                     {
                         rank: 1,
@@ -422,6 +437,11 @@
                         rank: 2,
                         level: 25,
                         description: 'You now have +3 to Intelligence and Perception between the hours of 6:00 p.m. and 6:00 a.m., and night vision when sneaking.'
+                    },
+                    {
+                        rank: 3,
+                        level: 37,
+                        description: 'You have 30 extra health between the hours of 6:00 PM and 6:00 AM.(Far Harbor DLC)'
                     }
                 ]
             },
@@ -646,7 +666,7 @@
                 rank: 6,
                 name: 'Rad Resistant',
                 img: 'rad-resistant.png',
-                ranks: 3,
+                ranks: 4,
                 ranked: [
                    {
                        rank: 1,
@@ -662,6 +682,11 @@
                        rank: 3,
                        level: 26,
                        description: 'You now have +30 Radiation Resistance.'
+                   },
+                   {
+                       rank: 4,
+                       level: 35,
+                       description: 'You now have +40 Radiation Resistance. (Far Harbor DLC)'
                    }
                 ]
             },
@@ -715,7 +740,7 @@
                 rank: 9,
                 name: 'Ghoulish',
                 img: 'ghoulish.png',
-                ranks: 3,
+                ranks: 4,
                 ranked: [
                    {
                        rank: 1,
@@ -731,7 +756,12 @@
                        rank: 3,
                        level: 48,
                        description: 'Radiation now regenerates even more of your lost Health, and some Feral Ghouls will randomly become friendly.'
-                   }
+                   },
+                   {
+                       rank: 4,
+                       level: 50,
+                       description: 'Rad damage will now begin to slowly heal, restoring health in the process. (Nuka-World DLC)'
+                   } 
                 ]
             },
             {
@@ -812,7 +842,7 @@
                 rank: 3,
                 name: 'Lone Wanderer',
                 img: 'lone-wanderer.png',
-                ranks: 3,
+                ranks: 4,
                 ranked: [
                     {
                         rank: 1,
@@ -828,6 +858,11 @@
                         rank: 3,
                         level: 40,
                         description: 'When adventuring without a companion, you do 25% more damage.'
+                    },
+                    {
+                        rank: 4,
+                        level: 50,
+                        description: 'When adventuring without a companion, you have 25 more action points.(Far Harbor DLC)'
                     }
                 ]
             },
@@ -835,7 +870,7 @@
                 rank: 4,
                 name: 'Attack Dog',
                 img: 'attack-dog.png',
-                ranks: 3,
+                ranks: 4,
                 ranked: [
                     {
                         rank: 1,
@@ -851,6 +886,11 @@
                         rank: 3,
                         level: 25,
                         description: 'When your dog holds an enemy, there\'s a chance he\'ll cause them to bleed.'
+                    },
+                    {
+                        rank: 4,
+                        level: 31,
+                        description: 'When adventuring with your dog, you take 10% less damage. (Nuka-World DLC)'
                     }
                 ]
             },
@@ -996,12 +1036,17 @@
                 rank: 1,
                 name: 'V.A.N.S.',
                 img: 'vans.png',
-                ranks: 1,
+                ranks: 2,
                 ranked: [
                     {
                         rank: 1,
                         level: 0,
                         description: 'Let Vault-Tec guide you! The path to your closest quest target is displayed in V.A.T.S.'
+                    },
+                    {
+                        rank: 2,
+                        level: 36,
+                        description: 'Gain +2 to Perception. (Nuka-World DLC)'
                     }
                 ]
             },
@@ -1093,7 +1138,7 @@
                 rank: 5,
                 name: 'Scrapper',
                 img: 'scrapper.png',
-                ranks: 2,
+                ranks: 3,
                 ranked: [
                     {
                         rank: 1,
@@ -1104,6 +1149,11 @@
                         rank: 2,
                         level: 23,
                         description: 'You can salvage rare components like circuitry, nuclear material, and fiber optics when scrapping weapons and armor. Items with favorited components are highlighted.'
+                    },
+                    {
+                        rank: 3,
+                        level: 40,
+                        description: 'You get more from salvaging. Appears to only apply to uncommon components, i.e., those affected by the first level of the perk. (Far Harbor DLC)'
                     }
                 ]
             },
@@ -1363,7 +1413,7 @@
                 rank: 5,
                 name: 'Action Boy',
                 img: 'action-boy-action-girl.png',
-                ranks: 2,
+                ranks: 3,
                 ranked: [
                     {
                         rank: 1,
@@ -1374,6 +1424,11 @@
                         rank: 2,
                         level: 18,
                         description: 'Your Action Points now regenerate 50% faster.'
+                    },
+                    {
+                        rank: 3,
+                        level: 38,
+                        description: 'Your Action Points now regenerate 75% faster. (Far Harbor DLC)'
                     }
                 ]
             },
@@ -1427,7 +1482,7 @@
                 rank: 8,
                 name: 'Quick Hands',
                 img: 'quick-hands.png',
-                ranks: 2,
+                ranks: 3,
                 ranked: [
                     {
                         rank: 1,
@@ -1438,6 +1493,11 @@
                         rank: 2,
                         level: 28,
                         description: 'Reloading guns costs no Action Points in V.A.T.S.'
+                    },
+                    {
+                        rank: 3,
+                        level: 40,
+                        description: 'Quick and efficient. You gain 10 additional Action Points. (Nuka-World DLC)'
                     }
                 ]
             },
@@ -1575,7 +1635,7 @@
                 rank: 4,
                 name: 'Mysterious Stranger',
                 img: 'mysterious-stranger.png',
-                ranks: 3,
+                ranks: 4,
                 ranked: [
                     {
                         rank: 1,
@@ -1591,6 +1651,11 @@
                         rank: 3,
                         level: 41,
                         description: 'The Mysterious Stranger appears more often in V.A.T.S. When he kills an opponent, there is a chance your Critical meter gets filled.'
+                    },
+                    {
+                        rank: 4,
+                        level: 49,
+                        description: 'The Mysterious Stranger appears more often in V.A.T.S. When he kills an opponent, there is a high chance your Critical meter gets filled. (Nuka-World DLC)'
                     }
                 ]
             },
@@ -1644,7 +1709,7 @@
                 rank: 7,
                 name: 'Critical Banker',
                 img: 'critical-banker.png',
-                ranks: 3,
+                ranks: 4,
                 ranked: [
                     {
                         rank: 1,
@@ -1660,6 +1725,11 @@
                         rank: 3,
                         level: 43,
                         description: 'You can now save 3 Critical Hits, to be used in V.A.T.S. when you need them the most. Banking a Critical has a chance to save an additional Critical.'
+                    },
+                    {
+                        rank: 4,
+                        level: 50,
+                        description: 'You can now save 4 Critical Hits, to be used in V.A.T.S. when you need them the most. (Far Harbor DLC)'
                     }
                 ]
             },
