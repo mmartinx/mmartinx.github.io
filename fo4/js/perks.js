@@ -1254,13 +1254,13 @@
                         description: 'Non-automatic pistols now do 40% more damage and have increased range.'
                     },
                     {
-                        rank: 15,
-                        level: 18,
+                        rank: 3,
+                        level: 15,
                         description: 'Non-automatic pistols now do 60% more damage and range is increased even further.'
                     },
                     {
-                        rank: 27,
-                        level: 31,
+                        rank: 4,
+                        level: 27,
                         description: 'Non-automatic pistols now do 80% more damage and their attacks can disarm opponents.'
                     },
                     {
