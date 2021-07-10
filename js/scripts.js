@@ -1,28 +1,27 @@
-var totalPoints = 28;
+const totalPoints = 28;
 
-var renderPerks = function () {
+const renderPerks = function () {
     var html = '',
         special = getSPECIAL();
 
     html += '<tr>';
-    for (var i = 0; i < special.length; ++i) {
+    for (let i = 0; i < special.length; ++i) {
         html += '<th>' + special[i].special.toUpperCase() + ': ' + special[i].value + '</th>';
     }
     html += '</tr>';
 
-    for (var i = 0; i <= 9; ++i) {
+    for (let i = 0; i <= 9; ++i) {
         html += '<tr>';
-        for (var j = 0; j < perks.length; ++j) {
-            var perk = perks[j].perks[i],
+        for (let j = 0; j < perks.length; ++j) {
+            const perk = perks[j].perks[i],
                 className = i > special[j].value - 1 ? ' unavailable' : '';
 
             if (!perk.currentRank) {
                 perk.currentRank = 0;
             }
 
-            var title = '';
-            title += perk.ranked.map(function (rank) {
-                var rankClass = perk.currentRank >= rank.rank ? 'has-rank' : 'no-rank';
+            const title = perk.ranked.map(function (rank) {
+                const rankClass = perk.currentRank >= rank.rank ? 'has-rank' : 'no-rank';
                 return '<p class=' + rankClass + '>Rank ' + rank.rank + ' (' + rank.level + '): ' + rank.description + '</p>';
             }).join('');
 
@@ -37,20 +36,20 @@ var renderPerks = function () {
     $('.table').html(html);
 }
 
-var getJSON = function () {
+const getJSON = function () {
     return btoa(JSON.stringify({
         s: getSPECIALShort(),
         r: getRanks()
     }));
 }
 
-var getRanks = function () {
-    var ranks = [];
-    for (var i = 0; i < perks.length; ++i) {
-        for (var j = 0; j < perks[i].perks.length; ++j) {
-            var perk = perks[i].perks[j];
+const getRanks = function () {
+    const ranks = [];
+    for (let i = 0; i < perks.length; ++i) {
+        for (let j = 0; j < perks[i].perks.length; ++j) {
+            const perk = perks[i].perks[j];
             if (perk.currentRank && perk.currentRank > 0) {
-                var item = {};
+                const item = {};
                 item[perk.name] = perk.currentRank;
                 ranks.push(item);
             }
@@ -60,15 +59,15 @@ var getRanks = function () {
     return ranks;
 }
 
-var getSPECIALShort = function () {
-    var specs = [];
+const getSPECIALShort = function () {
+    const specs = [];
     $('input[type="number"]').each(function () {
         specs.push($(this).val());
     });
     return specs;
 };
 
-var getSPECIAL = function () {
+const getSPECIAL = function () {
     return $('[data-special]').map(function () {
         return {
             special: $(this).data('special'),
@@ -77,23 +76,23 @@ var getSPECIAL = function () {
     });
 };
 
-var requiredLevel = function () {
-    var total = 0;
-    for (var i = 0; i < perks.length; ++i) {
-        for (var j = 0; j < perks[i].perks.length; ++j) {
+const requiredLevel = function () {
+    let total = 0;
+    for (let i = 0; i < perks.length; ++i) {
+        for (let j = 0; j < perks[i].perks.length; ++j) {
             total += perks[i].perks[j].currentRank;
         }
     }
 
-    var remaining = totalPoints - getAllocatedPoints();
+    const remaining = totalPoints - getAllocatedPoints();
     if (remaining < 0) {
         total += remaining * -1;
     }
 
-    var maxLevel = 0;
-    for (var i = 0; i < perks.length; ++i) {
-        for (var j = 0; j < perks[i].perks.length; ++j) {
-            for (var k = 0; k < perks[i].perks[j].currentRank; ++k) {
+    let maxLevel = 0;
+    for (let i = 0; i < perks.length; ++i) {
+        for (let j = 0; j < perks[i].perks.length; ++j) {
+            for (let k = 0; k < perks[i].perks[j].currentRank; ++k) {
                 if (perks[i].perks[j].ranked[k].level > maxLevel) {
                     maxLevel = perks[i].perks[j].ranked[k].level;
                 }
@@ -107,11 +106,11 @@ var requiredLevel = function () {
     return total;
 }
 
-var renderRequiredLevel = function () {
+const renderRequiredLevel = function () {
     $('.required-level').text(requiredLevel());
 }
 
-var renderAll = function () {
+const renderAll = function () {
     renderPerks();
     calculatePoints();
     renderRequiredLevel();
@@ -119,8 +118,8 @@ var renderAll = function () {
     window.location.hash = '#' + getJSON();
 }
 
-var calculatePoints = function () {
-    var remaining = totalPoints - getAllocatedPoints();
+const calculatePoints = function () {
+    let remaining = totalPoints - getAllocatedPoints();
     //if (includeBobbleheads()) {
     //    remaining += 7;
     //}
@@ -130,7 +129,7 @@ var calculatePoints = function () {
     $pointsLeft.text(remaining);
 }
 
-var getAllocatedPoints = function () {
+const getAllocatedPoints = function () {
     return $('[data-special] input').map(function () {
         return parseInt($(this).val());
     }).get().reduce(function (prev, curr) {
@@ -138,26 +137,27 @@ var getAllocatedPoints = function () {
     });
 }
 
-var $pointsLeft = $('.points-left');
-        //$includeBobbleheads = $('.include-bobbleheads');
+const $pointsLeft = $('.points-left');
 
-//var includeBobbleheads = function () {
-//    return $includeBobbleheads.is(':checked');
-//}
+$includeBobbleheads = $('.include-bobbleheads');
 
-var pointsRemaining = function () {
+const includeBobbleheads = function () {
+   return $includeBobbleheads.is(':checked');
+}
+
+const pointsRemaining = function () {
     return parseInt($pointsLeft.text());
 }
 
-var renderSummary = function () {
-    var html = '';
-    for (var i = 0; i < perks.length; ++i) {
-        for (var j = 0; j < perks[i].perks.length; ++j) {
-            var perk = perks[i].perks[j];
+const renderSummary = function () {
+    let html = '';
+    for (let i = 0; i < perks.length; ++i) {
+        for (let j = 0; j < perks[i].perks.length; ++j) {
+            let perk = perks[i].perks[j];
             if (perk.currentRank && perk.currentRank > 0) {
                 html += '<li>' + perk.name + ': ' + perk.currentRank + '/' + perk.ranks + '</li>';
                 html += '<ul>';
-                for (var k = 0; k < perk.currentRank; ++k) {
+                for (let k = 0; k < perk.currentRank; ++k) {
                     html += '<li>' + perk.ranked[k].description + '</li>';
                 }
                 html += '</ul>';
@@ -170,20 +170,20 @@ var renderSummary = function () {
 }
 
 $(function () {
-    var hash = window.location.hash.replace('#', '');
+    const hash = window.location.hash.replace('#', '');
     if (hash.length > 0) {
-        var load = JSON.parse(atob(hash));
+        const load = JSON.parse(atob(hash));
         $('input[type=number]').each(function (index) {
             $(this).val(load.s[index]);
         });
 
-        for (var i = 0; i < load.r.length; ++i) {
-            var key = Object.keys(load.r[i])[0],
+        for (let i = 0; i < load.r.length; ++i) {
+            const key = Object.keys(load.r[i])[0],
                 value = load.r[i][key];
 
-            for (var j = 0; j < perks.length; ++j) {
-                for (var k = 0; k < perks[j].perks.length; ++k) {
-                    var perk = perks[j].perks[k];
+            for (let j = 0; j < perks.length; ++j) {
+                for (let k = 0; k < perks[j].perks.length; ++k) {
+                    const perk = perks[j].perks[k];
                     if (perk.name === key) {
                         perk.currentRank = value;
                     }
@@ -199,7 +199,7 @@ $(function () {
     //});
 
     $('.btn-inc').on('click', function () {
-        var $li = $(this).parent().parent(),
+        const $li = $(this).parent().parent(),
             $input = $li.find('input'),
             value = parseInt($input.val()),
             remaining = totalPoints - getAllocatedPoints();
@@ -215,7 +215,7 @@ $(function () {
     });
 
     $('.btn-dec').on('click', function () {
-        var $li = $(this).parent().parent(),
+        const $li = $(this).parent().parent(),
             $input = $li.find('input'),
             value = parseInt($input.val()),
             special = $li.data('special');
@@ -223,9 +223,9 @@ $(function () {
         if (value > 1) {
             $input.val(value - 1);
 
-            for (var i = 0; i < perks.length; ++i) {
+            for (let i = 0; i < perks.length; ++i) {
                 if (perks[i].special === special) {
-                    for (var j = value - 1; j < perks[i].perks.length; ++j) {
+                    for (let j = value - 1; j < perks[i].perks.length; ++j) {
                         perks[i].perks[j].currentRank = 0;
                     }
                 }
@@ -236,7 +236,7 @@ $(function () {
     });
 
     $('body').on('click', '.btn-inc-perk, .btn-dec-perk', function () {
-        var $container = $(this).parent().parent(),
+        const $container = $(this).parent().parent(),
             i = parseInt($container.data('i')),
             j = parseInt($container.data('j')),
             perk = perks[j].perks[i],

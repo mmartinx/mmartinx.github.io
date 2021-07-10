@@ -1,4 +1,4 @@
-# Updated-Fallout-4-Character-Planner
+# Fallout-4-Character-Planner
 
 Fallout 4 Character Builder
 
