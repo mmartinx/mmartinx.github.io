@@ -15,12 +15,13 @@ import LevelControl from "./LevelControl";
 import Bobbleheads from "./Bobbleheads";
 
 const usePreserveState = () => {
-    const {SPECIAL, getLevel} = useContext(StatsContext)
+    const {SPECIAL, getLevel, getBobbleHeads} = useContext(StatsContext)
     const {perks} = useContext(PerksContext)
     useEffect(() => {
         const state = {
             SPECIAL: SPECIAL,
             level: getLevel(),
+            bobbleheads: getBobbleHeads(),
             perksAdded: perks.map(it => {
                 const {name, rank} = it
                 return {name, rank} as Perk
@@ -45,9 +46,10 @@ const AppContextProvider = ({children}: PropsWithChildren<any>) => {
     const {
         SPECIAL,
         level,
-        perksAdded
+        perksAdded,
+        bobbleheads
     } = JSON.parse(LZUTF8.decompress(window.location.hash.substring(1, window.location.hash.length), {inputEncoding: "Base64"}) || "{}")
-    const stats = useStats({SPECIAL, level})
+    const stats = useStats({SPECIAL, level, bobbleheads})
     const perks = usePerks({level: stats.getLevel(), perksAdded})
     return (
         <StatsContext.Provider value={stats}>
