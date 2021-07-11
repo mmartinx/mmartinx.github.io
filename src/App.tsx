@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 
-import {useEffect, useMemo} from "react"
+import {PropsWithChildren, useContext, useEffect, useMemo} from "react"
 import {Col, Container, Row} from "react-bootstrap"
 
 import LZUTF8 from "lzutf8";
@@ -14,7 +14,34 @@ import PerksDetail from "./PerksDetail"
 import LevelControl from "./LevelControl";
 import Bobbleheads from "./Bobbleheads";
 
-const App = () => {
+const usePreserveState = () => {
+    const {SPECIAL, getLevel} = useContext(StatsContext)
+    const {perks} = useContext(PerksContext)
+    useEffect(() => {
+        const state = {
+            SPECIAL: SPECIAL,
+            level: getLevel(),
+            perksAdded: perks.map(it => {
+                const {name, rank} = it
+                return {name, rank} as Perk
+            })
+            .reduce((arr, perk) => {
+                const existing = arr.findIndex(it => it.name === perk.name)
+                if (existing >= 0) arr.splice(existing, 1)
+                arr.push(perk)
+                return arr
+            }, [] as Perk[])
+        }
+        window.history.replaceState(null, document.title, `#${LZUTF8.compress(JSON.stringify(state), {outputEncoding: "Base64"})}`)
+    }, [SPECIAL, perks, getLevel])
+}
+
+const AppStateListener = ({children}: PropsWithChildren<any>) => {
+    usePreserveState()
+    return (<>{children}</>)
+}
+
+const AppContextProvider = ({children}: PropsWithChildren<any>) => {
     const {
         SPECIAL,
         level,
@@ -22,40 +49,35 @@ const App = () => {
     } = JSON.parse(LZUTF8.decompress(window.location.hash.substring(1, window.location.hash.length), {inputEncoding: "Base64"}) || "{}")
     const stats = useStats({SPECIAL, level})
     const perks = usePerks({level: stats.getLevel(), perksAdded})
-    const state = {
-        SPECIAL: stats.SPECIAL,
-        level: stats.getLevel(),
-        perksAdded: perks.perks.map(it => {
-            const {name, rank} = it
-            return {name, rank} as Perk
-        })
-        .reduce((arr, perk) => {
-            const existing = arr.findIndex(it => it.name === perk.name)
-            if (existing >= 0) arr.splice(existing, 1)
-            arr.push(perk)
-            return arr
-        }, [] as Perk[])
-    }
-    window.history.pushState(null, document.title, `#${LZUTF8.compress(JSON.stringify(state), {outputEncoding: "Base64"})}`)
     return (
         <StatsContext.Provider value={stats}>
             <PerksContext.Provider value={useMemo(() => perks, [perks])}>
-                <Container fluid>
-                    <Header/>
-                    <Row>
-                        <Col xl={3}>
-                            <StartingStats/>
-                            <Bobbleheads/>
-                            <LevelControl/>
-                            <PerksDetail/>
-                        </Col>
-                        <Col xl={9}>
-                            <PerksGrid/>
-                        </Col>
-                    </Row>
-                </Container>
+                <AppStateListener>
+                    {children}
+                </AppStateListener>
             </PerksContext.Provider>
         </StatsContext.Provider>
+    )
+}
+
+const App = () => {
+    return (
+        <AppContextProvider>
+            <Container fluid>
+                <Header/>
+                <Row>
+                    <Col xl={3}>
+                        <StartingStats/>
+                        <Bobbleheads/>
+                        <LevelControl/>
+                        <PerksDetail/>
+                    </Col>
+                    <Col xl={9}>
+                        <PerksGrid/>
+                    </Col>
+                </Row>
+            </Container>
+        </AppContextProvider>
     )
 }
 

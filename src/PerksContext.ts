@@ -38,10 +38,6 @@ export const usePerks = ({
         .filter(it => perksAdded.find(added => it.name === added.name && it.rank <= added.rank))
     )
 
-    useEffect(() => {
-        removePerksBelowLevel(level)
-    }, [level])
-
     const add = (perk: Perk) => {
         const local = allPerks
         .find(it => it.special === perk.special)
@@ -64,9 +60,9 @@ export const usePerks = ({
         setPerks([...other, ...add])
     }
 
-    const removePerksBelowLevel = (level: number) => {
-        setPerks(perks.filter(it => it.level < level))
-    }
+    useEffect(() => {
+        setPerks(perks => perks.filter(it => it.level < level))
+    }, [level])
 
     return {
         perks,

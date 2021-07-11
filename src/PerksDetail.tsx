@@ -13,17 +13,23 @@ const PerksDetail = () => {
                         obj[it.name] = target
                         return obj
                     }, {} as any)
-                    return Object.values(map).map((value: any) =>
-                        <>
-                            <p>{value.name}: {value.ranked.length} / {value.ranks}</p>
+                    return Object.values(map).map(({name, ranked, ranks}: any) =>
+                        <span key={name}>
+                            <p>{name}: {ranked.length} / {ranks}</p>
                             {
-                                value.ranked.map((rank: any) =>
-                                    <p style={{
-                                        paddingLeft: 20,
-                                        fontSize: 12
-                                    }}>{rank.description}</p>)
+                                ranked.map((rank: any) =>
+                                    <p
+                                        key={rank.level}
+                                        style={{
+                                            paddingLeft: 20,
+                                            fontSize: 12
+                                        }}
+                                    >
+                                        {rank.description}
+                                    </p>
+                                )
                             }
-                        </>
+                        </span>
                     )
                 }
             }

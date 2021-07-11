@@ -13,6 +13,7 @@ const Bobbleheads = () =>
             }}>
                 {Object.keys(StatType).map(name => name as StatType).map(name =>
                     <span
+                        key={name}
                         style={{
                             padding: 10,
                             opacity: hasBobblehead(name) ? 1 : 0.5,
