@@ -9,6 +9,7 @@ import StartingStats from "./StartingStats"
 import Header from "./Header";
 import PerksGrid from "./PerksGrid";
 import {useMemo} from "react";
+import PerksDetail from "./PerksDetail";
 
 const App = () => {
     const stats = useStats();
@@ -19,7 +20,7 @@ const App = () => {
                 <Container fluid>
                     <Header/>
                     <Row>
-                        <Col md={3}>
+                        <Col xl={3}>
                             <StartingStats/>
                             <div style={{paddingTop: 10, justifyContent: "center"}}>
                                 Level: {stats.getLevel()}
@@ -48,35 +49,9 @@ const App = () => {
                                     }
                                 </div>
                             </div>
-                            <div>
-                                {
-                                    (() => {
-                                        const map = perks.perks
-                                        .reduce((obj, it) => {
-                                            const {name, ranks, rank, level, description} = it
-                                            const target = obj[it.name] || {name, ranks, ranked: []}
-                                            target.ranked.push({rank, level, description})
-                                            obj[it.name] = target
-                                            return obj
-                                        }, {} as any)
-                                        return Object.values(map).map((value: any) => (
-                                            <>
-                                                <p>{value.name}: {value.ranked.length} / {value.ranks}</p>
-                                                {
-                                                    value.ranked.map((rank: any) =>
-                                                        <p style={{
-                                                            paddingLeft: 20,
-                                                            fontSize: 12
-                                                        }}>{rank.description}</p>)
-                                                }
-                                            </>
-                                        ))
-                                    })()
-
-                                }
-                            </div>
+                            <PerksDetail/>
                         </Col>
-                        <Col md={9}>
+                        <Col xl={9}>
                             <PerksGrid/>
                         </Col>
                     </Row>
