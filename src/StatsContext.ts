@@ -59,7 +59,7 @@ export const useStats = ({
 
     const pointsRemaining = () => {
         const pointsUsed = Object.values(SPECIAL).reduce((a, b) => a + Math.min(b, 11), 0) - bobbleheads.length
-        return MAX_POINTS - pointsUsed
+        return Math.max(0, MAX_POINTS - pointsUsed)
     }
 
     const getRank = (stat: string): number => (SPECIAL as any)[stat]
