@@ -1,5 +1,5 @@
 import StatsContext, {Stats} from "./StatsContext"
-import {Button, ListGroup, ListGroupItem} from "react-bootstrap";
+import {Button, ListGroup, ListGroupItem} from "react-bootstrap"
 
 const StartingStats = () => {
     return (

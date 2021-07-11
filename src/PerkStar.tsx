@@ -1,4 +1,4 @@
-import PerksContext, {Perks} from "./PerksContext";
+import PerksContext, {Perks} from "./PerksContext"
 
 
 type PerkStarProps = {

@@ -1,7 +1,7 @@
 import perks from "./perks.json"
-import {Col, Row} from "react-bootstrap";
-import StatsContext from "./StatsContext";
-import PerkElement from "./PerkElement";
+import {Col, Row} from "react-bootstrap"
+import StatsContext from "./StatsContext"
+import PerkElement from "./PerkElement"
 
 const PerksGrid = () => {
     return (

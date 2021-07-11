@@ -1,4 +1,4 @@
-import {Button, Navbar} from "react-bootstrap";
+import {Button, Navbar} from "react-bootstrap"
 
 const Header = () => {
     return (
