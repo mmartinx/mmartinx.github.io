@@ -56,7 +56,7 @@ export const useStats = (): Stats => {
     const decrement = (stat: string) => changeValue(stat, -1)
 
     const pointsRemaining = () => {
-        const pointsUsed = Object.values(SPECIAL).reduce((a, b) => a + Math.min(b, 10), 0)
+        const pointsUsed = Object.values(SPECIAL).reduce((a, b) => a + Math.min(b, 10), 0) - bobbleheads.length
         return MAX_POINTS - pointsUsed
     }
 
