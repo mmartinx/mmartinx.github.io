@@ -11,6 +11,7 @@ import PerksGrid from "./PerksGrid"
 import {useMemo} from "react"
 import PerksDetail from "./PerksDetail"
 import LevelControl from "./LevelControl";
+import Bobbleheads from "./Bobbleheads";
 
 const App = () => {
     const stats = useStats()
@@ -23,6 +24,7 @@ const App = () => {
                     <Row>
                         <Col xl={3}>
                             <StartingStats/>
+                            <Bobbleheads/>
                             <LevelControl/>
                             <PerksDetail/>
                         </Col>

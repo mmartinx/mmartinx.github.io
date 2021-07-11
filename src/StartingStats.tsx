@@ -16,7 +16,8 @@ const StartingStats = () => {
                                 {
                                     Object.entries(SPECIAL)
                                     .map(
-                                        ([name, value]) => <Stat key={name} name={name} value={value}/>
+                                        ([name, value]) => <Stat key={name} name={name}
+                                                                 value={value}/>
                                     )
                                 }
                             </ListGroup>
@@ -38,9 +39,9 @@ const Stat = ({name, value}: StatProps) => {
     return (
         <StatsContext.Consumer>
             {
-                ({increment, decrement, pointsRemaining}: Stats) =>
+                ({increment, decrement, pointsRemaining, getRank, hasBobblehead}: Stats) =>
                     <ListGroupItem>
-                        <span>
+                        <span style={{userSelect: "none"}}>
                             {name}:
                         </span>
                         <span className={"float-end"}>
@@ -55,7 +56,8 @@ const Stat = ({name, value}: StatProps) => {
                                 style={{
                                     paddingLeft: 10,
                                     paddingRight: 10,
-                                    minWidth: 40
+                                    minWidth: 40,
+                                    userSelect: "none"
                                 }}
                             >
                                 {value}
@@ -63,7 +65,7 @@ const Stat = ({name, value}: StatProps) => {
                             <Button size={"sm"}
                                     style={{padding: ".1rem .5rem"}}
                                     onClick={() => increment(name)}
-                                    disabled={value >= 10 || pointsRemaining() <= 0}
+                                    disabled={getRank(name) >= (hasBobblehead(name) ? 11 : 10) || pointsRemaining() <= 0}
                             >
                                 +
                             </Button>
