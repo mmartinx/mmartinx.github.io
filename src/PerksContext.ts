@@ -38,7 +38,7 @@ export const usePerks = ({level}: {level: number}): Perks => {
     }
 
     const remove = (perk: Perk) => {
-        const existing = perks.filter(it => it.name == perk.name)
+        const existing = perks.filter(it => it.name === perk.name)
         const other = perks.filter(it => it.name !== perk.name)
         const higher = existing.find(it => it.rank > perk.rank)
         const add = existing.filter(it => higher ? it.rank <= perk.rank : it.rank < perk.rank)

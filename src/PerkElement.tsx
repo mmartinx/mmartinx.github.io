@@ -16,31 +16,43 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
             {
                 ({getRank, getLevel}: Stats) => {
                     return (
-                        <div style={{padding: 10}}>
-                            <OverlayTrigger
-                                trigger={["hover", "focus"]}
-                                placement={"left"}
-                                overlay={
-                                    <Popover id={name}>
-                                        <Popover.Title>{name}</Popover.Title>
-                                        <Popover.Content>
-                                            {
-                                                levels.map(level => {
-                                                    return (
-                                                        <p key={`${level.name} ${level.rank}`}>
-                                                            Rank {level.rank}: {level.description}
-                                                        </p>
-                                                    )
-                                                })
-                                            }
-                                        </Popover.Content>
-                                    </Popover>
-                                }
-                            >
-                                <PerksContext.Consumer>
-                                    {
-                                        ({perks, perkPointsRemaining}: Perks) => {
-                                            return (
+                        <PerksContext.Consumer>
+                            {
+                                ({perks, perkPointsRemaining}: Perks) => {
+                                    return (
+                                        <div style={{padding: 10}}>
+                                            <OverlayTrigger
+                                                trigger={["hover", "focus"]}
+                                                placement={"auto"}
+                                                transition={false}
+                                                overlay={
+                                                    <Popover id={name}>
+                                                        <Popover.Title>{name}</Popover.Title>
+                                                        <Popover.Content>
+                                                            {
+                                                                levels.map(level => {
+                                                                    console.log(level)
+                                                                    return (
+                                                                        <p key={`${level.name} ${level.rank}`}>
+                                                                            Rank {level.rank}
+                                                                            {
+                                                                                level.level > getLevel() &&
+                                                                                <span style={{
+                                                                                    fontSize: 12,
+                                                                                    fontWeight: 700,
+                                                                                    paddingLeft: 4
+                                                                                }}>
+                                                                                  (Requires Level {level.level})
+                                                                                </span>
+                                                                            }: {level.description}
+                                                                        </p>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Popover.Content>
+                                                    </Popover>
+                                                }
+                                            >
                                                 <div
                                                     style={{opacity: getRank(special) >= rank ? 1 : 0.3}}>
                                                     <img
@@ -67,12 +79,12 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                                                         }
                                                     </div>
                                                 </div>
-                                            )
-                                        }
-                                    }
-                                </PerksContext.Consumer>
-                            </OverlayTrigger>
-                        </div>
+                                            </OverlayTrigger>
+                                        </div>
+                                    )
+                                }
+                            }
+                        </PerksContext.Consumer>
                     )
                 }
             }
