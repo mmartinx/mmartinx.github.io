@@ -18,8 +18,25 @@ export type Perks = {
     perkPointsRemaining: () => number
 }
 
-export const usePerks = ({level}: { level: number }): Perks => {
-    const [perks, setPerks] = useState<Array<Perk>>([])
+export const usePerks = ({
+                             level,
+                             perksAdded = []
+                         }: { level: number, perksAdded?: Perk[] }): Perks => {
+    const [perks, setPerks] = useState<Array<Perk>>(
+        allPerks
+        .flatMap((it: any) => {
+            const {special, perks} = it
+            return perks.map((it: any) => ({special, ...it}))
+        })
+        .flatMap((it: any) => {
+            const {special, name, ranked} = it
+            return ranked.map((it: any) => {
+                const {level, rank, description} = it
+                return {special, name, level, rank, description, ranks: ranked.length}
+            })
+        })
+        .filter(it => perksAdded.find(added => it.name === added.name && it.rank <= added.rank))
+    )
 
     useEffect(() => {
         removePerksBelowLevel(level)

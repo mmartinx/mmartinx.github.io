@@ -35,9 +35,12 @@ const defaultSpecial = Object.keys(StatType).reduce((obj, key) => {
 
 const MAX_POINTS = 28
 
-export const useStats = (): Stats => {
-    const [SPECIAL, setSpecial] = useState<SPECIAL>(defaultSpecial)
-    const [level, setLevel] = useState(1)
+export const useStats = ({
+                             SPECIAL: special = defaultSpecial,
+                             level: initialLevel = 1
+                         }: { SPECIAL?: SPECIAL, level?: number }): Stats => {
+    const [SPECIAL, setSpecial] = useState<SPECIAL>(special)
+    const [level, setLevel] = useState(initialLevel)
     const [bobbleheads, setBobbleheads] = useState<StatType[]>([])
 
     const changeValue = (stat: string, value: number) => {

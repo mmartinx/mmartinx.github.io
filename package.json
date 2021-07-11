@@ -10,6 +10,7 @@
     "@types/react": "^17.0.14",
     "@types/react-bootstrap-range-slider": "^1.2.1",
     "bootstrap": "^5.0.2",
+    "lzutf8": "^0.6.0",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
