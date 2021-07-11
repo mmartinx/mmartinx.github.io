@@ -1,5 +1,5 @@
 # Fallout-4-Character-Planner
 
-Fallout 4 Character Builder
+Now built in [react](https://reactjs.org)
 
 Original [here](http://mmartinx.github.io/fo4/)
