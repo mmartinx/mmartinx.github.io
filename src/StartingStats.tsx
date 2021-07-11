@@ -34,17 +34,14 @@ type StatProps = {
     value: number
 }
 
-const Stat = ({name, value}: StatProps) => {
-
-    return (
-        <StatsContext.Consumer>
-            {
-                ({increment, decrement, pointsRemaining, getRank, hasBobblehead}: Stats) =>
-                    <ListGroupItem>
-                        <span style={{userSelect: "none"}}>
-                            {name}:
-                        </span>
-                        <span className={"float-end"}>
+const Stat = ({name, value}: StatProps) =>
+    <StatsContext.Consumer>
+        {({increment, decrement, pointsRemaining, getRank, hasBobblehead}: Stats) =>
+            <ListGroupItem>
+                <span style={{userSelect: "none"}}>
+                    {name}:
+                </span>
+                <span className={"float-end"}>
                             <Button size={"sm"}
                                     style={{padding: ".1rem .5rem"}}
                                     onClick={() => decrement(name)}
@@ -70,10 +67,8 @@ const Stat = ({name, value}: StatProps) => {
                                 +
                             </Button>
                         </span>
-                    </ListGroupItem>
-            }
-        </StatsContext.Consumer>
-    )
-}
+            </ListGroupItem>
+        }
+    </StatsContext.Consumer>
 
 export default StartingStats
