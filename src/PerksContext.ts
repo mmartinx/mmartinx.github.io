@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import allPerks from "./perks.json"
 
@@ -15,15 +15,17 @@ export type Perks = {
     perks: Perk[],
     add: (perk: Perk) => void,
     remove: (perk: Perk) => void,
-    removePerksBelowLevel: (level: number) => void,
     perkPointsRemaining: () => number
 }
 
-export const usePerks = ({level}: {level: number}): Perks => {
+export const usePerks = ({level}: { level: number }): Perks => {
     const [perks, setPerks] = useState<Array<Perk>>([])
 
+    useEffect(() => {
+        removePerksBelowLevel(level)
+    }, [level])
+
     const add = (perk: Perk) => {
-        // const add = Array.from({length: perk.rank}).map((it, index) => ({...perk, rank: index + 1}))
         const local = allPerks
         .find(it => it.special === perk.special)
         ?.perks
@@ -53,7 +55,6 @@ export const usePerks = ({level}: {level: number}): Perks => {
         perks,
         add,
         remove,
-        removePerksBelowLevel,
         perkPointsRemaining: () => {
             return level - 1 - perks.length
         }

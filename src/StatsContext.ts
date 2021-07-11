@@ -14,6 +14,7 @@ export type Stats = {
     SPECIAL: SPECIAL,
     increment: (stat: string) => void,
     decrement: (stat: string) => void,
+    reset: () => void,
     pointsRemaining: () => number,
     getRank: (stat: string) => number,
     getLevel: () => number,
@@ -47,11 +48,16 @@ export const useStats = (): Stats => {
     }
 
     const getRank = (stat: string): number => (SPECIAL as any)[stat]
+    const reset = () => {
+        setLevel(0)
+        setSpecial(defaultSpecial)
+    }
 
     return {
         SPECIAL,
         increment,
         decrement,
+        reset,
         pointsRemaining,
         getRank,
         getLevel: () => level,

@@ -1,4 +1,5 @@
 import {Button, Navbar} from "react-bootstrap"
+import StatsContext from "./StatsContext"
 
 const Header = () => {
     return (
@@ -9,9 +10,13 @@ const Header = () => {
                     Fallout 4 Character Planner
                 </span>
             </Navbar.Brand>
-            <Button style={{fontSize: 14}} variant={"danger"}>
-                Reset
-            </Button>
+            <StatsContext.Consumer>
+                {({reset}) =>
+                    <Button style={{fontSize: 14}} variant={"danger"} onClick={() => reset()}>
+                        Reset
+                    </Button>
+                }
+            </StatsContext.Consumer>
         </Navbar>
     )
 }

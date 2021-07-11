@@ -37,7 +37,6 @@ const App = () => {
                                         onChange={changeEvent => {
                                             const level = parseInt(changeEvent.target.value)
                                             stats.setLevel(level)
-                                            perks.removePerksBelowLevel(level)
                                         }}
                                     />
                                     {
