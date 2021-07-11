@@ -22,9 +22,6 @@ const App = () => {
     } = JSON.parse(LZUTF8.decompress(window.location.hash.substring(1, window.location.hash.length), {inputEncoding: "Base64"}) || "{}")
     const stats = useStats({SPECIAL, level})
     const perks = usePerks({level: stats.getLevel(), perksAdded})
-    useEffect(() => {
-
-    }, [])
     const state = {
         SPECIAL: stats.SPECIAL,
         level: stats.getLevel(),
