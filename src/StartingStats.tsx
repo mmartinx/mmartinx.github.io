@@ -45,7 +45,7 @@ const Stat = ({name, value}: StatProps) =>
                             <Button size={"sm"}
                                     style={{padding: ".1rem .5rem"}}
                                     onClick={() => decrement(name)}
-                                    disabled={value <= 1}
+                                    disabled={value <= (hasBobblehead(name) ? 2 : 1)}
                             >
                                 -
                             </Button>
