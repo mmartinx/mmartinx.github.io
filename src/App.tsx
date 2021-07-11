@@ -10,6 +10,7 @@ import Header from "./Header"
 import PerksGrid from "./PerksGrid"
 import {useMemo} from "react"
 import PerksDetail from "./PerksDetail"
+import LevelControl from "./LevelControl";
 
 const App = () => {
     const stats = useStats()
@@ -22,32 +23,7 @@ const App = () => {
                     <Row>
                         <Col xl={3}>
                             <StartingStats/>
-                            <div style={{paddingTop: 10, justifyContent: "center"}}>
-                                Level: {stats.getLevel()}
-                                <div
-                                    style={{width: "100%"}}
-                                >
-                                    <RangeSlider
-                                        disabled={stats.pointsRemaining() > 0}
-                                        size={"lg"}
-                                        value={stats.getLevel()}
-                                        tooltip={"off"}
-                                        min={1}
-                                        max={50}
-                                        onChange={changeEvent => {
-                                            const level = parseInt(changeEvent.target.value)
-                                            stats.setLevel(level)
-                                        }}
-                                    />
-                                    {
-                                        stats.getLevel() > 1 &&
-                                        <p>
-                                          Remaining perk
-                                          points: {perks.perkPointsRemaining()}
-                                        </p>
-                                    }
-                                </div>
-                            </div>
+                            <LevelControl/>
                             <PerksDetail/>
                         </Col>
                         <Col xl={9}>
