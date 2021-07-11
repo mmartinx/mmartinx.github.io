@@ -42,7 +42,6 @@ export const useStats = (): Stats => {
 
     const changeValue = (stat: string, value: number) => {
         const target = getRank(stat);
-        console.log(`Bobblehead for ${stat} exists: ${bobbleheads.findIndex(it => it === stat)}`)
         setSpecial({
             ...SPECIAL,
             [stat]: Math.min(Math.max(target + value, 1), bobbleheads.findIndex(it => it === stat) >= 0 ? 11 : 10)
@@ -79,10 +78,6 @@ export const useStats = (): Stats => {
         }
         setBobbleheads([...bobbleheads])
     }
-
-    useEffect(() => {
-        console.log(SPECIAL)
-    }, [SPECIAL])
 
     return {
         SPECIAL,
