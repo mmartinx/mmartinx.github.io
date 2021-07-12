@@ -75,7 +75,7 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) =>
                                                 levels.map(level => <PerkStar
                                                     key={`${name}-${level.rank}`}
                                                     filled={!!perks.find(it => it.name === name && it.rank >= level.rank)}
-                                                    enabled={getRank(special) >= rank && getLevel() >= level.level && perkPointsRemaining() > 0}
+                                                    enabled={getRank(special) >= rank && getLevel() >= level.level}
                                                     special={special}
                                                     name={name}
                                                     rank={level.rank}
