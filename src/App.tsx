@@ -34,7 +34,7 @@ const usePreserveState = () => {
             }, [] as Perk[])
         }
         window.history.replaceState(null, document.title, `#${LZUTF8.compress(JSON.stringify(state), {outputEncoding: "Base64"})}`)
-    }, [SPECIAL, perks, getLevel])
+    }, [SPECIAL, perks, getLevel, getBobbleHeads])
 }
 
 const AppStateListener = ({children}: PropsWithChildren<any>) => {

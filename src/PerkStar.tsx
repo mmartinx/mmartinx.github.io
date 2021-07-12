@@ -1,7 +1,6 @@
 import PerksContext from "./PerksContext"
 import {useContext, useEffect, useState} from "react";
 
-
 type PerkStarProps = {
     filled?: boolean,
     enabled: boolean,
@@ -20,7 +19,7 @@ const PerkStar = ({filled = false, enabled, special, name, rank, level}: PerkSta
 
     useEffect(() => {
         setAddable(enabled && perkPointsRemaining() >= rank)
-    }, [enabled, perkPointsRemaining])
+    }, [enabled, perkPointsRemaining, rank])
 
     return (
         filled ?
