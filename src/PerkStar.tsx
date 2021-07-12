@@ -1,4 +1,4 @@
-import PerksContext, {Perks} from "./PerksContext"
+import PerksContext from "./PerksContext"
 import {useContext, useEffect, useState} from "react";
 
 

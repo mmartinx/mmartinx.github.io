@@ -16,7 +16,7 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) =>
     <StatsContext.Consumer>
         {({getRank, getLevel}: Stats) =>
             <PerksContext.Consumer>
-                {({perks, perkPointsRemaining}: Perks) =>
+                {({perks}: Perks) =>
                     <div style={{paddingTop: 10}}>
                         <OverlayTrigger
                             trigger={["hover", "focus"]}
