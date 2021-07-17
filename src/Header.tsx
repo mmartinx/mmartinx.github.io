@@ -3,7 +3,6 @@ import Buttons from "./Buttons";
 import {useMatchMedia} from "./MatchMedia";
 
 const Header = () => {
-
     const {gt} = useMatchMedia()
 
     return (
@@ -15,7 +14,10 @@ const Header = () => {
                     Fallout 4 Character Planner
                 </span>
             </Navbar.Brand>
-            {gt("xs") && <Buttons/>}
+            {
+                gt("xs") &&
+                <Buttons/>
+            }
         </Navbar>
     )
 }

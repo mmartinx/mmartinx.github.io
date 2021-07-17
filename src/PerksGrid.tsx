@@ -15,7 +15,7 @@ const PerksGrid = () => {
                                 perks.map(
                                     category => {
                                         return (
-                                            <Col key={category.special} style={{padding: "0px 8px"}}>
+                                            <Col key={category.special} style={{padding: "0px 12px"}}>
                                                 <Row style={{fontWeight: 600}}>
                                                     {category.special.substring(0, 2)}: {getRank(category.special)}
                                                 </Row>

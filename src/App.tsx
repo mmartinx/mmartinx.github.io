@@ -5,6 +5,7 @@ import {Col, Container, Row} from "react-bootstrap"
 
 import LZUTF8 from "lzutf8";
 
+import BuildContext, {useBuild} from "./BuildContext";
 import StatsContext, {useStats} from "./StatsContext"
 import PerksContext, {Perk, usePerks} from "./PerksContext"
 import StartingStats from "./StartingStats"
@@ -16,13 +17,16 @@ import Bobbleheads from "./Bobbleheads";
 import {useMatchMedia} from "./MatchMedia";
 import Buttons from "./Buttons";
 import PerksTower from "./PerksTower";
+import BuildInfo from "./BuildInfo";
 
 const usePreserveState = () => {
     const {SPECIAL, getLevel, getBobbleHeads} = useContext(StatsContext)
     const {perks} = useContext(PerksContext)
+    const {name} = useContext(BuildContext)
     useEffect(() => {
         const state = {
-            SPECIAL: SPECIAL,
+            name,
+            SPECIAL,
             level: getLevel(),
             bobbleheads: getBobbleHeads(),
             perksAdded: perks.map(it => {
@@ -37,7 +41,7 @@ const usePreserveState = () => {
             }, [] as Perk[])
         }
         window.history.replaceState(null, document.title, `#${LZUTF8.compress(JSON.stringify(state), {outputEncoding: "Base64"})}`)
-    }, [SPECIAL, perks, getLevel, getBobbleHeads])
+    }, [name, SPECIAL, perks, getLevel, getBobbleHeads])
 }
 
 const AppStateListener = ({children}: PropsWithChildren<any>) => {
@@ -47,19 +51,23 @@ const AppStateListener = ({children}: PropsWithChildren<any>) => {
 
 const AppContextProvider = ({children}: PropsWithChildren<any>) => {
     const {
+        name,
         SPECIAL,
         level,
         perksAdded,
-        bobbleheads
+        bobbleheads,
     } = JSON.parse(LZUTF8.decompress(window.location.hash.substring(1, window.location.hash.length), {inputEncoding: "Base64"}) || "{}")
     const stats = useStats({SPECIAL, level, bobbleheads})
     const perks = usePerks({level: stats.getLevel(), perksAdded})
+    const build = useBuild({name})
     return (
         <StatsContext.Provider value={stats}>
             <PerksContext.Provider value={useMemo(() => perks, [perks])}>
-                <AppStateListener>
-                    {children}
-                </AppStateListener>
+                <BuildContext.Provider value={useMemo(() => build, [build])}>
+                    <AppStateListener>
+                        {children}
+                    </AppStateListener>
+                </BuildContext.Provider>
             </PerksContext.Provider>
         </StatsContext.Provider>
     )
@@ -74,6 +82,7 @@ const App = () => {
                 {eq("xs") && <div style={{marginBottom: 20}}><Buttons/></div>}
                 <Row>
                     <Col xl={3}>
+                        <BuildInfo/>
                         <StartingStats/>
                         <Bobbleheads/>
                         <LevelControl/>
