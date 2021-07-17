@@ -3,6 +3,8 @@ import StatsContext, {Stats} from "./StatsContext"
 import PerksContext, {Perks} from "./PerksContext"
 import PerkStar from "./PerkStar"
 import {OverlayTriggerRenderProps} from "react-bootstrap/OverlayTrigger"
+import {useContext} from "react";
+import {useMatchMedia} from "./MatchMedia";
 
 type PerkProps = {
     special: string,
@@ -12,84 +14,94 @@ type PerkProps = {
     levels: any[]
 }
 
-const PerkElement = ({special, img, name, rank, levels}: PerkProps) =>
-    <StatsContext.Consumer>
-        {({getRank, getLevel}: Stats) =>
-            <PerksContext.Consumer>
-                {({perks}: Perks) =>
-                    <div style={{paddingTop: 10}}>
-                        <OverlayTrigger
-                            trigger={["hover", "focus"]}
-                            placement={"auto"}
-                            transition={false}
-                            overlay={
-                                <Popover id={name}>
-                                    <Popover.Title>{name}</Popover.Title>
-                                    <Popover.Content>
-                                        {
-                                            levels.map(level => {
-                                                return (
-                                                    <p key={`${level.name} ${level.rank}`}>
-                                                        Rank {level.rank}
-                                                        {
-                                                            level.level > getLevel() &&
-                                                            <span style={{
-                                                                fontSize: 12,
-                                                                fontWeight: 700,
-                                                                paddingLeft: 4
-                                                            }}>
-                                                              (Requires Level {level.level})
-                                                            </span>
-                                                        }: {level.description}
-                                                    </p>
-                                                )
-                                            })
-                                        }
-                                    </Popover.Content>
-                                </Popover>
-                            }
-                        >
+const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
+    const {getLevel, getRank} = useContext(StatsContext)
+    const {perks} = useContext(PerksContext)
+    const {eq} = useMatchMedia()
+    return (
+        <div style={{
+            paddingTop: 10,
+            opacity: getRank(special) >= rank ? 1 : 0.3,
+            display: "flex",
+            justifyContent: "center"
+        }}>
+            <OverlayTrigger
+                trigger={["hover", "focus"]}
+                placement={"auto"}
+                transition={false}
+                overlay={
+                    <Popover id={name}>
+                        <Popover.Title>{name}</Popover.Title>
+                        <Popover.Content>
                             {
-                                ({ref, ...triggerHandler}: OverlayTriggerRenderProps) =>
-                                    <div
-                                        ref={ref}
-                                        style={{
-                                            opacity: getRank(special) >= rank ? 1 : 0.3,
-                                            display: "inline-block",
-                                            justifyContent: "center"
-                                        }}>
-                                        <div {...triggerHandler}>
-                                            <Image
-                                                src={`${process.env.PUBLIC_URL}/img/${img}`}
-                                                alt={name}
-                                                style={{
-                                                    border: "0px solid #777"
-                                                }}
-                                            />
-                                        </div>
-                                        <div style={{
-                                            display: "flex",
-                                            justifyContent: "center"
-                                        }}>
+                                levels.map(level => {
+                                    return (
+                                        <p key={`${level.name} ${level.rank}`}>
+                                            Rank {level.rank}
                                             {
-                                                levels.map(level => <PerkStar
-                                                    key={`${name}-${level.rank}`}
-                                                    filled={!!perks.find(it => it.name === name && it.rank >= level.rank)}
-                                                    enabled={getRank(special) >= rank && getLevel() >= level.level}
-                                                    special={special}
-                                                    name={name}
-                                                    rank={level.rank}
-                                                    level={level.level}
-                                                />)
-                                            }
-                                        </div>
-                                    </div>
+                                                level.level > getLevel() &&
+                                                <span
+                                                    style={{
+                                                        fontSize: 12,
+                                                        fontWeight: 700,
+                                                        paddingLeft: 4
+                                                    }}
+                                                >
+                                                  (Requires Level {level.level})
+                                                </span>
+                                            }: {level.description}
+                                        </p>
+                                    )
+                                })
                             }
-                        </OverlayTrigger>
-                    </div>
+                        </Popover.Content>
+                    </Popover>
                 }
-            </PerksContext.Consumer>
-        }
-    </StatsContext.Consumer>
+            >
+                {
+                    ({ref, ...triggerHandler}: OverlayTriggerRenderProps) =>
+                        <div
+                            ref={ref}
+                            style={{
+                                opacity: getRank(special) >= rank ? 1 : 0.3,
+                                display: "inline-block",
+                                justifyContent: "center"
+                            }}>
+                            <div {...triggerHandler}>
+                                <Image
+                                    src={`${process.env.PUBLIC_URL}/img/${img}`}
+                                    alt={name}
+                                    style={{
+                                        border: "0px solid #777",
+                                        width: eq("xs") ? "66vw" : "100%",
+                                        height: eq("xs") ? "66vw" : "100%",
+                                    }}
+                                />
+                            </div>
+                            {
+                                eq("xs") && <h4 style={{textAlign: "center", paddingTop: 8}}>{name}</h4>
+                            }
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center"
+                            }}>
+                                {
+                                    levels.map(level => <PerkStar
+                                        key={`${name}-${level.rank}`}
+                                        filled={!!perks.find(it => it.name === name && it.rank >= level.rank)}
+                                        enabled={getRank(special) >= rank && getLevel() >= level.level}
+                                        special={special}
+                                        name={name}
+                                        rank={level.rank}
+                                        level={level.level}
+                                    />)
+                                }
+                            </div>
+                        </div>
+                }
+            </OverlayTrigger>
+        </div>
+    )
+}
 
 export default PerkElement

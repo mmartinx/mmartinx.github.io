@@ -1,21 +1,54 @@
 import PerksContext, {Perks} from "./PerksContext"
+import {useContext, useState} from "react";
+import {Button} from "react-bootstrap";
 
 const PerksDetail = () => {
+    const {perks} = useContext(PerksContext)
+    const [show, setShow] = useState(true)
     return (
-        <PerksContext.Consumer>
-            {
-                ({perks}: Perks) => {
-                    const map = perks
-                    .reduce((obj, it) => {
-                        const {name, ranks, rank, level, description} = it
-                        const target = obj[it.name] || {name, ranks, ranked: []}
-                        target.ranked.push({rank, level, description})
-                        obj[it.name] = target
-                        return obj
-                    }, {} as any)
-                    return Object.values(map).map(({name, ranked, ranks}: any) =>
+        <>
+            <div>
+                <h3 style={{display: "inline"}}>Perks Added</h3>
+                <Button
+                    size={"sm"}
+                    onClick={() => setShow(!show)}
+                    style={{
+                        padding: "0.1rem 0.2rem",
+                        marginBottom: 10,
+                        marginLeft: 10,
+                    }}
+                >
+                    {
+                        show ?
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" className="bi bi-dash" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                            </svg>
+                            :
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                    }
+                </Button>
+            </div>
+            <div>
+                {
+                    show &&
+                    Object.values(
+                        perks.reduce((obj, it) => {
+                            const {name, ranks, rank, level, description} = it
+                            const target = obj[it.name] || {name, ranks, ranked: []}
+                            target.ranked.push({rank, level, description})
+                            obj[it.name] = target
+                            return obj
+                        }, {} as any)
+                    )
+                    .map(({name, ranked, ranks}: any) =>
                         <span key={name}>
-                            <p>{name}: {ranked.length} / {ranks}</p>
+                                <p>{name}: {ranked.length} / {ranks}</p>
                             {
                                 ranked.map((rank: any) =>
                                     <p
@@ -29,11 +62,11 @@ const PerksDetail = () => {
                                     </p>
                                 )
                             }
-                        </span>
+                            </span>
                     )
                 }
-            }
-        </PerksContext.Consumer>
+            </div>
+        </>
     )
 }
 

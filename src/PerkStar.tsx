@@ -1,5 +1,6 @@
 import PerksContext from "./PerksContext"
 import {useContext, useEffect, useState} from "react";
+import {useMatchMedia} from "./MatchMedia";
 
 type PerkStarProps = {
     filled?: boolean,
@@ -12,8 +13,18 @@ type PerkStarProps = {
 
 const PerkStar = ({filled = false, enabled, special, name, rank, level}: PerkStarProps) => {
     const {add, remove, perkPointsRemaining} = useContext(PerksContext)
+    const {mediaSize} = useMatchMedia()
 
+    const [size, setSize] = useState(16)
     const [addable, setAddable] = useState(false)
+
+    useEffect(() => {
+        if (mediaSize === "xs") {
+            setSize(48)
+        } else {
+            setSize(16)
+        }
+    }, [mediaSize])
 
     const perk = {special, name, rank, level}
 
@@ -25,14 +36,15 @@ const PerkStar = ({filled = false, enabled, special, name, rank, level}: PerkSta
         filled ?
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
                 fill="yellow"
+                width={size}
+                height={size}
                 className="bi bi-star-fill"
                 viewBox="0 0 16 16"
                 onClick={() => remove(perk)}
                 style={{
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    fontSize: size
                 }}
             >
                 <path
@@ -42,15 +54,16 @@ const PerkStar = ({filled = false, enabled, special, name, rank, level}: PerkSta
             :
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
                 fill={"currentColor"}
+                width={size}
+                height={size}
                 className="bi bi-star"
                 viewBox="0 0 16 16"
                 onClick={() => addable && add(perk)}
                 style={{
                     opacity: addable ? 1 : 0.3,
-                    cursor: addable ? "pointer" : "cursor"
+                    cursor: addable ? "pointer" : "cursor",
+                    fontSize: size
                 }}
             >
                 <path
