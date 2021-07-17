@@ -9,7 +9,8 @@ export enum Breakpoints {
     sm,
     md,
     lg,
-    xl
+    xl,
+    xxl
 }
 
 // const breakpoints = [576, 768, 992, 1200]
@@ -19,7 +20,8 @@ const mediaSizes = {
     sm: `${minWidth(576)} and ${maxWidth(768)}`,
     md: `${minWidth(768)} and ${maxWidth(992)}`,
     lg: `${minWidth(992)} and ${maxWidth(1200)}`,
-    xl: minWidth(1200)
+    xl: `${minWidth(1200)} and ${maxWidth(1920)}`,
+    xxl: `${minWidth(1920)}`
 }
 
 export const useMatchMedia = () => {

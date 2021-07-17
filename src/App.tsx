@@ -32,8 +32,7 @@ const usePreserveState = () => {
             perksAdded: perks.map(it => {
                 const {name, rank} = it
                 return {name, rank} as Perk
-            })
-            .reduce((arr, perk) => {
+            }).reduce((arr, perk) => {
                 const existing = arr.findIndex(it => it.name === perk.name)
                 if (existing >= 0) arr.splice(existing, 1)
                 arr.push(perk)
@@ -61,7 +60,7 @@ const AppContextProvider = ({children}: PropsWithChildren<any>) => {
     const perks = usePerks({level: stats.getLevel(), perksAdded})
     const build = useBuild({name})
     return (
-        <StatsContext.Provider value={stats}>
+        <StatsContext.Provider value={useMemo(() => stats, [stats])}>
             <PerksContext.Provider value={useMemo(() => perks, [perks])}>
                 <BuildContext.Provider value={useMemo(() => build, [build])}>
                     <AppStateListener>
