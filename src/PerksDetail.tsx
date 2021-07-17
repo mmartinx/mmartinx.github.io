@@ -3,7 +3,7 @@ import {useContext, useState} from "react";
 import {Button} from "react-bootstrap";
 
 const PerksDetail = () => {
-    const {perks} = useContext(PerksContext)
+    const {perks, perkPointsRemaining, perkLevelRequired} = useContext(PerksContext)
     const [show, setShow] = useState(true)
     return (
         <>
@@ -40,6 +40,14 @@ const PerksDetail = () => {
                         :
                         <></>
                 }
+                <div style={{paddingBottom: 10, color: "#505050"}}>
+                    <span>
+                        Requires level: {Math.max(perkLevelRequired, 50 - perkPointsRemaining())}
+                    </span>
+                    <span className={"float-end"}>
+                        Remaining perk points: {perkPointsRemaining()}
+                    </span>
+                </div>
             </div>
             <div>
                 {

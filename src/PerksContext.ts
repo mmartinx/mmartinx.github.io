@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 
 import allPerks from "./perks.json"
 
@@ -19,7 +19,9 @@ export type Perks = {
     perkPointsRemaining: () => number,
     availablePerks: () => Perk[],
     reset: () => void,
-    getPerkRank: (name: String) => number
+    perkLevelRequired: number,
+    getPerkRank: (name: String) => number,
+    getPerk: (name: String) => Perk | undefined
 }
 
 type UsePerks = { level: number, perksAdded?: Perk[] }
@@ -56,7 +58,7 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
         .find(it => it.name === perk.name)
         const add = local
         ?.ranked
-        .map(it => ({...it, name: local.name, ranks: local.ranks}))
+        .map(it => ({...it, name: local.name, ranks: local.ranks, requiredSpecial: local.rank}))
         .filter(it => it.rank <= perk.rank)
         .map(it => ({...it, special: perk.special} as Perk)) as Perk[]
         const other = perks.filter(it => it.name !== perk.name)
@@ -96,11 +98,17 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
         })
         .filter(it => !perks.find(perk => it.name === perk.name && it.rank <= perk.rank))
 
+    const getPerk = (name: String) => perks
+    .filter(it => it.name === name)
+    .reduce((a, b) => a.rank > b.rank ? a : b, {} as Perk)
+
     const getPerkRank = (name: String) => perks.filter(it => it.name === name)?.length ?? 0
 
     const reset = () => {
         setPerks([])
     }
+
+    const perkLevelRequired = useMemo(() => perks.reduce((a, b) => a.level > b.level ? a : b, {} as Perk).level, [perks])
 
     useEffect(() => {
         setPerks(perks => perks.filter(it => it.level < level))
@@ -113,6 +121,8 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
         perkPointsRemaining,
         availablePerks,
         getPerkRank,
+        getPerk,
+        perkLevelRequired,
         reset
     } as Perks
 }

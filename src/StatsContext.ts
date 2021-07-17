@@ -37,7 +37,7 @@ const MAX_POINTS = 28
 
 export const useStats = ({
                              SPECIAL: special = defaultSpecial,
-                             level: initialLevel = 1,
+                             level: initialLevel = 50,
                              bobbleheads: savedBobbleheads = []
                          }: { SPECIAL?: SPECIAL, level?: number, bobbleheads: [] }): Stats => {
     const [SPECIAL, setSpecial] = useState<SPECIAL>(special)
@@ -66,7 +66,6 @@ export const useStats = ({
     const getRank = (stat: string): number => (SPECIAL as any)[stat]
 
     const reset = () => {
-        setLevel(1)
         setSpecial(defaultSpecial)
         setBobbleheads([])
     }

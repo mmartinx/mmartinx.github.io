@@ -16,8 +16,9 @@ type PerkProps = {
 
 const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
     const {getLevel, getRank} = useContext(StatsContext)
-    const {perks} = useContext(PerksContext)
+    const {perks, getPerk} = useContext(PerksContext)
     const {eq} = useMatchMedia()
+    const perk = getPerk(name)
     return (
         <div style={{
             paddingTop: 10,
@@ -35,11 +36,12 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                         <Popover.Content>
                             {
                                 levels.map(level => {
+                                    const showLevelRequirement = level.level > getLevel() || (perk?.rank ?? 0) < level.rank
                                     return (
-                                        <p key={`${level.name} ${level.rank}`}>
+                                        <p key={`${name} ${level.rank}`}>
                                             Rank {level.rank}
                                             {
-                                                level.level > getLevel() &&
+                                                showLevelRequirement &&
                                                 <span
                                                     style={{
                                                         fontSize: 12,
@@ -79,7 +81,8 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                                 />
                             </div>
                             {
-                                eq("xs") && <h4 style={{textAlign: "center", paddingTop: 8}}>{name}</h4>
+                                eq("xs") &&
+                                <h4 style={{textAlign: "center", paddingTop: 8}}>{name}</h4>
                             }
                             <div style={{
                                 display: "flex",

@@ -84,7 +84,6 @@ const App = () => {
                         <BuildInfo/>
                         <StartingStats/>
                         <Bobbleheads/>
-                        <LevelControl/>
                         <PerksDetail/>
                     </Col>
                     <Col xl={9}>
