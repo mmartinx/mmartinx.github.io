@@ -18,11 +18,12 @@ const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
     const {perks, getPerk} = useContext(PerksContext)
     const {eq} = useMatchMedia()
     const {img, name, rank: requiredSpecial, ranked} = perkTreePerk
+    const obtainable = getRank(special) >= requiredSpecial
     const perk = getPerk(name)
     return (
         <div style={{
             paddingTop: 10,
-            opacity: getRank(special) >= requiredSpecial ? 1 : 0.3,
+            opacity: obtainable ? 1 : 0.3,
             display: "flex",
             justifyContent: "center"
         }}>
@@ -37,7 +38,7 @@ const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
                             {
                                 ranked.map(it => {
                                     const {level, rank, description} = it
-                                    const showLevelRequirement = level > getLevel() || (perk?.rank ?? 0) < rank
+                                    const showLevelRequirement = (perk?.rank ?? 0) < rank
                                     return (
                                         <p key={`${name} ${rank}`}>
                                             Rank {rank}
@@ -55,7 +56,7 @@ const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
                                                         level ?
                                                             `(Requires Level ${level})`
                                                             :
-                                                            `(Requires ${special} ${requiredSpecial})`
+                                                            !obtainable && `(Requires ${special} ${requiredSpecial})`
                                                     }
                                                 </span>
                                             }: {description}
@@ -72,7 +73,7 @@ const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
                         <div
                             ref={ref}
                             style={{
-                                opacity: getRank(special) >= requiredSpecial ? 1 : 0.3,
+                                opacity: obtainable ? 1 : 0.3,
                                 display: "inline-block",
                                 justifyContent: "center"
                             }}>
@@ -99,7 +100,7 @@ const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
                                     ranked.map(it => <PerkStar
                                         key={`${name}-${it.rank}`}
                                         filled={!!perks.find(it => it.name === name && it.rank >= it.rank)}
-                                        enabled={getRank(special) >= requiredSpecial && getLevel() >= it.level}
+                                        enabled={obtainable && getLevel() >= it.level}
                                         special={special}
                                         name={name}
                                         rank={it.rank}
