@@ -7,6 +7,7 @@ export type Perk = {
     name: string,
     rank: number,
     level: number,
+    requiredSpecial?: number,
     description?: string,
     ranks?: number
 }
@@ -15,7 +16,10 @@ export type Perks = {
     perks: Perk[],
     add: (perk: Perk) => void,
     remove: (perk: Perk) => void,
-    perkPointsRemaining: () => number
+    perkPointsRemaining: () => number,
+    availablePerks: () => Perk[],
+    reset: () => void,
+    getPerkRank: (name: String) => number
 }
 
 export const usePerks = ({
@@ -29,10 +33,18 @@ export const usePerks = ({
             return perks.map((it: any) => ({special, ...it}))
         })
         .flatMap((it: any) => {
-            const {special, name, ranked} = it
+            const {special, name, rank: requiredSpecial, ranked} = it
             return ranked.map((it: any) => {
                 const {level, rank, description} = it
-                return {special, name, level, rank, description, ranks: ranked.length}
+                return {
+                    special,
+                    name,
+                    level,
+                    rank,
+                    description,
+                    requiredSpecial,
+                    ranks: ranked.length
+                }
             })
         })
         .filter(it => perksAdded.find(added => it.name === added.name && it.rank <= added.rank))
@@ -60,6 +72,27 @@ export const usePerks = ({
         setPerks([...other, ...add])
     }
 
+    const availablePerks = () =>
+        allPerks
+        .flatMap((it: any) => {
+            const {special, perks} = it
+            return perks.map((it: any) => ({special, ...it}))
+        })
+        .flatMap((it: any) => {
+            const {special, name, rank: requiredSpecial, ranked} = it
+            return ranked.map((it: any) => {
+                const {level, rank, description} = it
+                return {special, name, level, rank, requiredSpecial, description, ranks: ranked.length}
+            })
+        })
+        .filter(it => !perks.find(perk => it.name === perk.name && it.rank <= perk.rank))
+
+    const getPerkRank = (name: String) => perks.filter(it => it.name === name)?.length ?? 0
+
+    const reset = () => {
+        setPerks([])
+    }
+
     useEffect(() => {
         setPerks(perks => perks.filter(it => it.level < level))
     }, [level])
@@ -70,7 +103,10 @@ export const usePerks = ({
         remove,
         perkPointsRemaining: () => {
             return level - 1 - perks.length
-        }
+        },
+        availablePerks,
+        getPerkRank,
+        reset
     } as Perks
 }
 

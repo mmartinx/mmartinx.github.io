@@ -11,29 +11,43 @@ import {
 import StatsContext from "./StatsContext"
 import {useContext, useState} from "react";
 import {OverlayTriggerRenderProps} from "react-bootstrap/OverlayTrigger";
+import PerksContext from "./PerksContext";
+import {useRandomizer} from "./Randomizer";
 
 const Header = () => {
-    const {reset} = useContext(StatsContext)
+    const {reset: resetStats} = useContext(StatsContext)
+    const {reset: resetPerks} = useContext(PerksContext)
     const [showShareModal, setShowShareModal] = useState(false)
 
+    const {randomize, randomizing} = useRandomizer()
+
     const share = () => setShowShareModal(!showShareModal)
+
+    const reset = () => {
+        resetStats();
+        resetPerks();
+    }
 
     const buttonStyle = {fontSize: 14, marginRight: 10}
 
     return (
         <Navbar bg={"light"} style={{marginBottom: 20}}>
             <Navbar.Brand>
-                <img src={"img/brand.jpg"} style={{height: 30, width: 30}} alt={"Brand"}/>
+                <img src={`${process.env.PUBLIC_URL}/img/brand.jpg`} style={{height: 30, width: 30}}
+                     alt={"Brand"}/>
                 <span style={{paddingLeft: 10, fontSize: 18, color: "#777", fontWeight: 500}}>
                     Fallout 4 Character Planner
                 </span>
             </Navbar.Brand>
             <ButtonToolbar>
-                <Button style={buttonStyle} variant={"danger"} onClick={() => reset()}>
+                <Button style={buttonStyle} variant={"danger"} onClick={() => reset()} disabled={randomizing}>
                     Reset
                 </Button>
-                <Button style={buttonStyle} onClick={() => share()}>
+                <Button style={buttonStyle} onClick={() => share()} disabled={randomizing}>
                     Share
+                </Button>
+                <Button style={buttonStyle} variant={"warning"} onClick={() => randomize()} disabled={randomizing}>
+                    Randomize
                 </Button>
             </ButtonToolbar>
             <Modal show={showShareModal} onHide={() => setShowShareModal(false)} centered>

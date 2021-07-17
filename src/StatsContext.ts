@@ -66,7 +66,7 @@ export const useStats = ({
     const getRank = (stat: string): number => (SPECIAL as any)[stat]
 
     const reset = () => {
-        setLevel(0)
+        setLevel(1)
         setSpecial(defaultSpecial)
         setBobbleheads([])
     }
@@ -94,7 +94,7 @@ export const useStats = ({
         setLevel: (level: number) => setLevel(Math.min(level, 50)),
         getBobbleHeads: () => bobbleheads,
         bobbleToggle,
-        hasBobblehead: (stat: string) => !!bobbleheads.find(it => it === stat)
+        hasBobblehead: (stat: string) => !!bobbleheads.find(it => it === stat),
     } as Stats;
 }
 

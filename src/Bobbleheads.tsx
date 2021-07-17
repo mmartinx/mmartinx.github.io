@@ -27,7 +27,7 @@ const Bobbleheads = () =>
                                     maxWidth: 30,
                                     userSelect: "none"
                                 }}
-                                src={"img/bobblehead.png"}
+                                src={`${process.env.PUBLIC_URL}/img/bobblehead.png`}
                             />
                             <p style={{userSelect: "none"}}>{name.substring(0, 2)}</p>
                     </span>

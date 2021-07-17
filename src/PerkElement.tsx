@@ -60,7 +60,7 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) =>
                                         }}>
                                         <div {...triggerHandler}>
                                             <Image
-                                                src={`img/${img}`}
+                                                src={`${process.env.PUBLIC_URL}/img/${img}`}
                                                 alt={name}
                                                 style={{
                                                     border: "0px solid #777"
