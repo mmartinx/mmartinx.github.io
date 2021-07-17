@@ -99,7 +99,7 @@ const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
                                 {
                                     ranked.map(it => <PerkStar
                                         key={`${name}-${it.rank}`}
-                                        filled={!!perks.find(it => it.name === name && it.rank >= it.rank)}
+                                        filled={!!perks.find(perk => perk.name === name && perk.rank >= it.rank)}
                                         enabled={obtainable && getLevel() >= it.level}
                                         special={special}
                                         name={name}

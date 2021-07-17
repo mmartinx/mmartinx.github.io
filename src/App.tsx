@@ -12,7 +12,6 @@ import StartingStats from "./StartingStats"
 import Header from "./Header"
 import PerksGrid from "./PerksGrid"
 import PerksDetail from "./PerksDetail"
-import LevelControl from "./LevelControl";
 import Bobbleheads from "./Bobbleheads";
 import {useMatchMedia} from "./MatchMedia";
 import Buttons from "./Buttons";
