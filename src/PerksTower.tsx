@@ -1,5 +1,5 @@
 import SpecialPerks from "./perks.json"
-import {Button, Col, Row, ToggleButton, ToggleButtonGroup} from "react-bootstrap"
+import {Col, Row, ToggleButton, ToggleButtonGroup} from "react-bootstrap"
 import StatsContext from "./StatsContext"
 import PerkElement from "./PerkElement"
 import {useState} from "react";

@@ -22,10 +22,9 @@ export type Perks = {
     getPerkRank: (name: String) => number
 }
 
-export const usePerks = ({
-                             level,
-                             perksAdded = []
-                         }: { level: number, perksAdded?: Perk[] }): Perks => {
+type UsePerks = { level: number, perksAdded?: Perk[] }
+
+export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
     const [perks, setPerks] = useState<Array<Perk>>(
         allPerks
         .flatMap((it: any) => {
@@ -72,6 +71,8 @@ export const usePerks = ({
         setPerks([...other, ...add])
     }
 
+    const perkPointsRemaining = () => level - 1 - perks.length
+
     const availablePerks = () =>
         allPerks
         .flatMap((it: any) => {
@@ -82,7 +83,15 @@ export const usePerks = ({
             const {special, name, rank: requiredSpecial, ranked} = it
             return ranked.map((it: any) => {
                 const {level, rank, description} = it
-                return {special, name, level, rank, requiredSpecial, description, ranks: ranked.length}
+                return {
+                    special,
+                    name,
+                    level,
+                    rank,
+                    requiredSpecial,
+                    description,
+                    ranks: ranked.length
+                }
             })
         })
         .filter(it => !perks.find(perk => it.name === perk.name && it.rank <= perk.rank))
@@ -101,9 +110,7 @@ export const usePerks = ({
         perks,
         add,
         remove,
-        perkPointsRemaining: () => {
-            return level - 1 - perks.length
-        },
+        perkPointsRemaining,
         availablePerks,
         getPerkRank,
         reset

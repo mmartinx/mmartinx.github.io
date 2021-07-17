@@ -1,6 +1,6 @@
 import {Image, OverlayTrigger, Popover} from "react-bootstrap"
-import StatsContext, {Stats} from "./StatsContext"
-import PerksContext, {Perks} from "./PerksContext"
+import StatsContext from "./StatsContext"
+import PerksContext from "./PerksContext"
 import PerkStar from "./PerkStar"
 import {OverlayTriggerRenderProps} from "react-bootstrap/OverlayTrigger"
 import {useContext} from "react";

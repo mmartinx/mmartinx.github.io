@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 
 const maxWidth = (width: number) => `(max-width: ${width - .02}px)`
 

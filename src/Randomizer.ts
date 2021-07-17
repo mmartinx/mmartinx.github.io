@@ -2,6 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import StatsContext from "./StatsContext";
 import PerksContext from "./PerksContext";
 
+const MAX_FAILURES = 100
+
 export const useRandomizer = () => {
     const {
         getLevel,
@@ -18,7 +20,9 @@ export const useRandomizer = () => {
         getPerkRank,
         reset: resetPerks
     } = useContext(PerksContext)
+
     const [randomizing, setRandomizing] = useState(false)
+    const [failedAddPerkCount, setFailedAddPerkCount] = useState(0)
 
     const randomize = () => {
         resetStats()
@@ -36,15 +40,24 @@ export const useRandomizer = () => {
             }
             if (perkPointsRemaining() > 0) {
                 const available = availablePerks()
-                .filter(it => (it.requiredSpecial || 999) <= (SPECIAL as any)[it.special])
+                    .filter(it => (it.requiredSpecial || 999) <= (SPECIAL as any)[it.special])
                 const perk = available[Math.floor(Math.random() * available.length)]
-                addPerk(perk)
+                if (perkPointsRemaining() >= (perk.rank - getPerkRank(perk.name))) {
+                    addPerk(perk)
+                } else {
+                    setFailedAddPerkCount(count => count + 1)
+                }
             }
-            if (pointsRemaining() <= 0 && perkPointsRemaining() <= 0) {
+            const failed = failedAddPerkCount >= MAX_FAILURES
+            const outOfPoints = pointsRemaining() <= 0 && perkPointsRemaining() <= 0
+            if (failed || outOfPoints) {
                 setRandomizing(false)
             }
         }
-    }, [randomizing, SPECIAL, addPerk, availablePerks, getPerkRank, increment, perkPointsRemaining, pointsRemaining, getLevel, setLevel])
+    }, [
+        randomizing, SPECIAL, addPerk, availablePerks, getPerkRank, increment, perkPointsRemaining,
+        pointsRemaining, getLevel, setLevel, failedAddPerkCount
+    ])
 
     return {randomize, randomizing}
 }

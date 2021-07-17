@@ -1,4 +1,4 @@
-import PerksContext, {Perks} from "./PerksContext"
+import PerksContext from "./PerksContext"
 import {useContext, useState} from "react";
 import {Button} from "react-bootstrap";
 
