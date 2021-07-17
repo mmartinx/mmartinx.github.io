@@ -18,8 +18,8 @@ const StartingStats = () => {
                                 {
                                     Object.entries(SPECIAL)
                                     .map(
-                                        ([name, value]) => <Stat key={name} name={name}
-                                                                 value={value}/>
+                                        ([name, value]) =>
+                                            <Stat key={name} name={name} value={value}/>
                                     )
                                 }
                             </ListGroup>

@@ -5,24 +5,24 @@ import PerkStar from "./PerkStar"
 import {OverlayTriggerRenderProps} from "react-bootstrap/OverlayTrigger"
 import {useContext} from "react";
 import {useMatchMedia} from "./MatchMedia";
+import {PerkTreePerk} from "./Perks";
 
 type PerkProps = {
     special: string,
     img: string,
-    name: string,
-    rank: number,
-    levels: any[]
+    perk: PerkTreePerk
 }
 
-const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
+const PerkElement = ({special, perk: perkTreePerk}: PerkProps) => {
     const {getLevel, getRank} = useContext(StatsContext)
     const {perks, getPerk} = useContext(PerksContext)
     const {eq} = useMatchMedia()
+    const {img, name, rank: requiredSpecial, ranked} = perkTreePerk
     const perk = getPerk(name)
     return (
         <div style={{
             paddingTop: 10,
-            opacity: getRank(special) >= rank ? 1 : 0.3,
+            opacity: getRank(special) >= requiredSpecial ? 1 : 0.3,
             display: "flex",
             justifyContent: "center"
         }}>
@@ -35,11 +35,12 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                         <Popover.Title>{name}</Popover.Title>
                         <Popover.Content>
                             {
-                                levels.map(level => {
-                                    const showLevelRequirement = level.level > getLevel() || (perk?.rank ?? 0) < level.rank
+                                ranked.map(it => {
+                                    const {level, rank, description} = it
+                                    const showLevelRequirement = level > getLevel() || (perk?.rank ?? 0) < rank
                                     return (
-                                        <p key={`${name} ${level.rank}`}>
-                                            Rank {level.rank}
+                                        <p key={`${name} ${rank}`}>
+                                            Rank {rank}
                                             {
                                                 showLevelRequirement &&
                                                 <span
@@ -49,9 +50,15 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                                                         paddingLeft: 4
                                                     }}
                                                 >
-                                                  (Requires Level {level.level})
+                                                    {
+
+                                                        level ?
+                                                            `(Requires Level ${level})`
+                                                            :
+                                                            `(Requires ${special} ${requiredSpecial})`
+                                                    }
                                                 </span>
-                                            }: {level.description}
+                                            }: {description}
                                         </p>
                                     )
                                 })
@@ -65,7 +72,7 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                         <div
                             ref={ref}
                             style={{
-                                opacity: getRank(special) >= rank ? 1 : 0.3,
+                                opacity: getRank(special) >= requiredSpecial ? 1 : 0.3,
                                 display: "inline-block",
                                 justifyContent: "center"
                             }}>
@@ -89,14 +96,14 @@ const PerkElement = ({special, img, name, rank, levels}: PerkProps) => {
                                 justifyContent: "center"
                             }}>
                                 {
-                                    levels.map(level => <PerkStar
-                                        key={`${name}-${level.rank}`}
-                                        filled={!!perks.find(it => it.name === name && it.rank >= level.rank)}
-                                        enabled={getRank(special) >= rank && getLevel() >= level.level}
+                                    ranked.map(it => <PerkStar
+                                        key={`${name}-${it.rank}`}
+                                        filled={!!perks.find(it => it.name === name && it.rank >= it.rank)}
+                                        enabled={getRank(special) >= requiredSpecial && getLevel() >= it.level}
                                         special={special}
                                         name={name}
-                                        rank={level.rank}
-                                        level={level.level}
+                                        rank={it.rank}
+                                        level={it.level}
                                     />)
                                 }
                             </div>

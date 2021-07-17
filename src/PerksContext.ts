@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-
-import allPerks from "./perks.json"
+import {PerksData} from "./Perks";
 
 export type Perk = {
     special: string,
@@ -28,7 +27,7 @@ type UsePerks = { level: number, perksAdded?: Perk[] }
 
 export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
     const [perks, setPerks] = useState<Array<Perk>>(
-        allPerks
+        PerksData
         .flatMap((it: any) => {
             const {special, perks} = it
             return perks.map((it: any) => ({special, ...it}))
@@ -52,7 +51,7 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
     )
 
     const add = (perk: Perk) => {
-        const local = allPerks
+        const local = PerksData
         .find(it => it.special === perk.special)
         ?.perks
         .find(it => it.name === perk.name)
@@ -76,7 +75,7 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
     const perkPointsRemaining = () => level - 1 - perks.length
 
     const availablePerks = () =>
-        allPerks
+        PerksData
         .flatMap((it: any) => {
             const {special, perks} = it
             return perks.map((it: any) => ({special, ...it}))
