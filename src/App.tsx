@@ -13,6 +13,8 @@ import PerksGrid from "./PerksGrid"
 import PerksDetail from "./PerksDetail"
 import LevelControl from "./LevelControl";
 import Bobbleheads from "./Bobbleheads";
+import {useMatchMedia} from "./MatchMedia";
+import Buttons from "./Buttons";
 
 const usePreserveState = () => {
     const {SPECIAL, getLevel, getBobbleHeads} = useContext(StatsContext)
@@ -63,10 +65,12 @@ const AppContextProvider = ({children}: PropsWithChildren<any>) => {
 }
 
 const App = () => {
+    const {eq} = useMatchMedia()
     return (
         <AppContextProvider>
             <Container fluid>
                 <Header/>
+                {eq("xs") && <div style={{marginBottom: 20}}><Buttons/></div>}
                 <Row>
                     <Col xl={3}>
                         <StartingStats/>
