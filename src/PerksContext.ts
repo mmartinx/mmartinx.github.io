@@ -107,7 +107,7 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
         setPerks([])
     }
 
-    const perkLevelRequired = useMemo(() => perks.reduce((a, b) => a.level > b.level ? a : b, {} as Perk).level, [perks])
+    const perkLevelRequired = useMemo(() => perks.reduce((a, b) => a.level > b.level ? a : b, {} as Perk).level ?? 0, [perks])
 
     useEffect(() => {
         setPerks(perks => perks.filter(it => it.level < level))

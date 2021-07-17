@@ -1,35 +1,41 @@
 import PerksContext from "./PerksContext"
-import {useContext, useState} from "react";
+import {useContext, useMemo, useState} from "react";
 import {Button} from "react-bootstrap";
 
 const PerksDetail = () => {
     const {perks, perkPointsRemaining, perkLevelRequired} = useContext(PerksContext)
     const [show, setShow] = useState(true)
+    const requiredLevel = useMemo(() => Math.max(perkLevelRequired, 50 - perkPointsRemaining()), [perkLevelRequired, perkPointsRemaining])
     return (
         <>
             <div>
-                <h3 style={{display: "inline"}}>Perks Added</h3>
-                {
-                    perks.length ?
+                <div style={{display: "flex", alignItems: "center", marginBottom: 10}}>
+                    <h3 style={{marginBottom: 0}}>Perks Added</h3>
+                    {
+                        perks.length > 0 &&
                         <Button
                             size={"sm"}
                             onClick={() => setShow(!show)}
                             style={{
-                                padding: "0.1rem 0.2rem",
-                                marginBottom: 10,
+                                padding: "1.6px 3px",
                                 marginLeft: 10,
+                                height: 24,
+                                alignItems: "center",
+                                display: "flex"
                             }}
                         >
                             {
                                 show ?
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                         height="16"
                                          fill="currentColor" className="bi bi-dash"
                                          viewBox="0 0 16 16">
                                         <path
                                             d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                     </svg>
                                     :
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                         height="16"
                                          fill="currentColor" className="bi bi-plus"
                                          viewBox="0 0 16 16">
                                         <path
@@ -37,12 +43,11 @@ const PerksDetail = () => {
                                     </svg>
                             }
                         </Button>
-                        :
-                        <></>
-                }
+                    }
+                </div>
                 <div style={{paddingBottom: 10, color: "#505050"}}>
                     <span>
-                        Requires level: {Math.max(perkLevelRequired, 50 - perkPointsRemaining())}
+                        Requires level: {requiredLevel}
                     </span>
                     <span className={"float-end"}>
                         Remaining perk points: {perkPointsRemaining()}
