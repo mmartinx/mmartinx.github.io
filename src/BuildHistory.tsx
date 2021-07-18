@@ -1,4 +1,5 @@
 import React, {
+    CSSProperties,
     MouseEventHandler,
     PropsWithChildren,
     RefObject,
@@ -10,9 +11,11 @@ import React, {
 import BuildContext from "./BuildContext";
 import {ListGroup, ListGroupItem} from "react-bootstrap";
 import {v4 as uuid_v4} from "uuid";
+import {useMatchMedia} from "./MatchMedia";
 
 const BuildHistory = () => {
     const {id, history, remove, removeAll, load} = useContext(BuildContext)
+    const {gt} = useMatchMedia()
 
     if (history.length <= 0) {
         return null
@@ -21,20 +24,38 @@ const BuildHistory = () => {
     return (
         <div style={{marginBottom: 20}}>
             <span>
-                <h3 style={{marginBottom: 10}}>
+                <h3
+                    style={{
+                        marginBottom: 10,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                    }}
+                >
                     History
-                    <span
-                        className={"float-end"}
-                        style={{
-                            marginRight: 12,
-                            paddingBottom: 2
-                        }}
-                    >
+                        <span
+                            style={{
+                                marginLeft: "auto",
+                                textAlign: "end",
+                                marginRight: 12,
+                                paddingBottom: 2,
+                                width: "min-content",
+                                maxWidth: "20em",
+                                minWidth: gt("lg") ? "6em" : "25%"
+                            }}
+                        >
                         <ConfirmRemoveButton
+                            style={{
+                                fontSize: gt("lg") ? "0.4em" : "0.5em",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                wordBreak: "break-word"
+                            }}
                             message={"Are you sure you want to remove all items?"}
                         >
                             <span style={{
-                                fontSize: "0.75em",
+                                fontSize: "2em",
                                 paddingRight: 8,
                                 color: "gray",
                                 fontStyle: "italic"
@@ -50,7 +71,15 @@ const BuildHistory = () => {
             <ListGroup>
                 {
                     history.map(entry =>
-                        <ListGroupItem key={entry.id} style={{display: "flex", alignItems: "center"}}>
+                        <ListGroupItem
+                            key={entry.id}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                alignContent: "center"
+                            }}
+                        >
                             <span style={{display: "inline-block"}}>
                                 <span
                                     style={{
@@ -74,14 +103,14 @@ const BuildHistory = () => {
                                     {entry.id}
                                 </span>
                             </span>
-                            <span
-                                style={{marginLeft: "auto"}}
-                            >
+                            <span style={{marginLeft: "auto", textAlign: "end",}}>
                                 <ConfirmRemoveButton
+                                    style={{
+                                        fontSize: "0.75em",
+                                    }}
                                     message={"Are you sure you want to remove this item?"}
                                 >
                                     <span style={{
-                                        fontSize: "0.75em",
                                         paddingRight: 8,
                                         color: "gray",
                                         fontStyle: "italic"
@@ -120,9 +149,10 @@ const useOnClickAwayListener = ({ref, callback}: UseOnClickAwayListener) => {
 }
 
 const ConfirmRemoveButton = ({
+                                 style,
                                  children,
                                  message
-                             }: PropsWithChildren<any> & { message?: string }) => {
+                             }: PropsWithChildren<any> & { message?: string } & CSSProperties) => {
     const ref = useRef<HTMLSpanElement>(null)
     const [confirming, setConfirming] = useState(false)
     const confirm = (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -139,14 +169,20 @@ const ConfirmRemoveButton = ({
     useOnClickAwayListener({ref, callback: cancel})
 
     return (
-        <span style={confirming ? {color: "red",} : {}}>
+        <div style={
+            confirming ? {
+                ...style, color: "red",
+                wordBreak: "break-word",
+                display: "flex"
+            } : style
+        }
+        >
             {
                 confirming &&
                 <span
                     style={{
-                        fontSize: "0.75em",
                         paddingRight: 8,
-                        fontStyle: "italic"
+                        fontStyle: "italic",
                     }}
                 >
                     {message ?? "Are you sure?"}
@@ -159,6 +195,7 @@ const ConfirmRemoveButton = ({
                             return (
                                 child.props.confirmable ?
                                     <span
+                                        style={{marginLeft: "auto", textAlign: "end",}}
                                         key={uuid_v4()}
                                         onClickCapture={(e: React.MouseEvent<HTMLSpanElement>) => confirm(e)}
                                         ref={ref}
@@ -166,13 +203,16 @@ const ConfirmRemoveButton = ({
                                         {child}
                                     </span>
                                     :
-                                    confirming ? null : child
+                                    confirming ? null : <span style={{
+                                        marginLeft: "auto",
+                                        textAlign: "end",
+                                    }}>{child}</span>
                             )
                         }
                     )
                 }
             </>
-        </span>
+        </div>
     )
 
 }
@@ -180,13 +220,20 @@ const ConfirmRemoveButton = ({
 const noop = () => {
 }
 
-type RemoveButtonProps = {
-    fontSize?: number,
-    onClick?: MouseEventHandler<SVGSVGElement> | undefined,
-    confirmable: boolean
-}
+type RemoveButtonProps =
+    {
+        fontSize?: number,
+        onClick?: MouseEventHandler<SVGSVGElement> | undefined,
+        confirmable
+            :
+            boolean
+    }
 
-const RemoveButton = ({fontSize = 16, onClick = noop}: RemoveButtonProps) =>
+const RemoveButton = (
+    {
+        fontSize = 16, onClick = noop
+    }
+        : RemoveButtonProps) =>
     <svg xmlns="http://www.w3.org/2000/svg" width={`${fontSize}`} height={`${fontSize}`}
          fill="currentColor" className="bi bi-x-circle"
          viewBox="0 0 16 16"

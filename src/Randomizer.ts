@@ -27,12 +27,12 @@ export const useRandomizer = () => {
     const randomize = () => {
         resetStats()
         resetPerks()
+        setLevel(50)
         setRandomizing(true)
     }
 
     useEffect(() => {
         if (randomizing) {
-            setLevel(50)
             if (pointsRemaining() > 0) {
                 const stats = Object.keys(SPECIAL)
                 const stat = stats[Math.floor(Math.random() * stats.length)]
