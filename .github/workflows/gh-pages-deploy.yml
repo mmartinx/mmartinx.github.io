@@ -1,5 +1,5 @@
 name: Deploy GitHub Pages
-on: 
+on:
   push:
     branches: [ master ]
   pull_request:
@@ -15,6 +15,7 @@ jobs:
           node-version: '14'
           cache: 'yarn'
       - run: yarn install
+      - run: yarn test
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git

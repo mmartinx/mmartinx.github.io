@@ -11,7 +11,7 @@ const StartingStats = () => {
                     return (
                         <>
                             <div style={{padding: 2, marginBottom: 10}}>
-                                <h3>S.P.E.C.I.A.L</h3>
+                                <h3>S.P.E.C.I.A.L.</h3>
                                 <span>{pointsRemaining()} points left to spend</span>
                             </div>
                             <ListGroup>
