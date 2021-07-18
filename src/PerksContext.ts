@@ -13,6 +13,7 @@ export type Perk = {
 
 export type Perks = {
     perks: Perk[],
+    setPerks: (perks: Perk[]) => void,
     add: (perk: Perk) => void,
     remove: (perk: Perk) => void,
     perkPointsRemaining: () => number,
@@ -115,6 +116,7 @@ export const usePerks = ({level, perksAdded = []}: UsePerks): Perks => {
 
     return {
         perks,
+        setPerks,
         add,
         remove,
         perkPointsRemaining,

@@ -4,7 +4,7 @@ import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {UseModal} from "./Modal";
 
 const RenameModal = ({show, setShow}: UseModal) => {
-    const {name: buildName, setName: setBuildName} = useContext(BuildContext)
+    const {name: buildName, save: saveBuild} = useContext(BuildContext)
     const [name, setName] = useState(buildName || "")
     return (
         <Modal show={show} onHide={() => setShow(false)} centered>
@@ -22,7 +22,7 @@ const RenameModal = ({show, setShow}: UseModal) => {
                 <Button
                     className={"float-end"}
                     onClick={() => {
-                        setBuildName(name || undefined)
+                        saveBuild(name)
                         setShow(false)
                     }}
                 >

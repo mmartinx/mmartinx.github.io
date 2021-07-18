@@ -17,6 +17,7 @@ import {useMatchMedia} from "./MatchMedia";
 import Buttons from "./Buttons";
 import PerksTower from "./PerksTower";
 import BuildInfo from "./BuildInfo";
+import BuildHistory from "./BuildHistory";
 
 const usePreserveState = () => {
     const {SPECIAL, getLevel, getBobbleHeads} = useContext(StatsContext)
@@ -28,7 +29,7 @@ const usePreserveState = () => {
             SPECIAL,
             level: getLevel(),
             bobbleheads: getBobbleHeads(),
-            perksAdded: perks.map(it => {
+            perks: perks.map(it => {
                 const {name, rank} = it
                 return {name, rank} as Perk
             }).reduce((arr, perk) => {
@@ -47,25 +48,33 @@ const AppStateListener = ({children}: PropsWithChildren<any>) => {
     return (<>{children}</>)
 }
 
+const BuildContextProvider = ({name, children}: PropsWithChildren<{ name?: string }>) => {
+    const build = useBuild({name})
+    return (
+        <BuildContext.Provider value={useMemo(() => build, [build])}>
+            {children}
+        </BuildContext.Provider>
+    )
+}
+
 const AppContextProvider = ({children}: PropsWithChildren<any>) => {
     const {
         name,
         SPECIAL,
         level,
-        perksAdded,
+        perks: perksAdded,
         bobbleheads,
     } = JSON.parse(LZUTF8.decompress(window.location.hash.substring(1, window.location.hash.length), {inputEncoding: "Base64"}) || "{}")
     const stats = useStats({SPECIAL, level, bobbleheads})
     const perks = usePerks({level: stats.getLevel(), perksAdded})
-    const build = useBuild({name})
     return (
         <StatsContext.Provider value={useMemo(() => stats, [stats])}>
             <PerksContext.Provider value={useMemo(() => perks, [perks])}>
-                <BuildContext.Provider value={useMemo(() => build, [build])}>
+                <BuildContextProvider name={name}>
                     <AppStateListener>
                         {children}
                     </AppStateListener>
-                </BuildContext.Provider>
+                </BuildContextProvider>
             </PerksContext.Provider>
         </StatsContext.Provider>
     )
@@ -83,6 +92,7 @@ const App = () => {
                         <BuildInfo/>
                         <StartingStats/>
                         <Bobbleheads/>
+                        <BuildHistory/>
                         <PerksDetail/>
                     </Col>
                     <Col xl={9}>

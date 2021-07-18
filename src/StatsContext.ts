@@ -12,6 +12,7 @@ export type SPECIAL = {
 
 export type Stats = {
     SPECIAL: SPECIAL,
+    setSpecial: (special: SPECIAL) => void,
     increment: (stat: string) => void,
     decrement: (stat: string) => void,
     reset: () => void,
@@ -84,6 +85,7 @@ export const useStats = ({
 
     return {
         SPECIAL,
+        setSpecial,
         increment,
         decrement,
         reset,
