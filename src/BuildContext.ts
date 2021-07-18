@@ -91,7 +91,8 @@ export const useBuild = ({name: buildName}: UseBuild) => {
     const load = (id: string) => {
         const target = get(id)
         if (target) {
-            const {name, perks, SPECIAL} = target
+            const {id, name, perks, SPECIAL} = target
+            setId(id)
             setName(name)
             setPerks(perks)
             setSpecial(SPECIAL)
@@ -99,6 +100,7 @@ export const useBuild = ({name: buildName}: UseBuild) => {
     }
 
     return {
+        id,
         name,
         setName,
         lastSaved,
@@ -113,6 +115,7 @@ export const useBuild = ({name: buildName}: UseBuild) => {
 }
 
 type Build = {
+    id: string,
     name?: string,
     lastSaved?: Date,
     get: (id: string) => BuildData & Metadata | undefined,

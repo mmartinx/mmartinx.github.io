@@ -9,9 +9,10 @@ import React, {
 } from "react";
 import BuildContext from "./BuildContext";
 import {ListGroup, ListGroupItem} from "react-bootstrap";
+import {v4 as uuid_v4} from "uuid";
 
 const BuildHistory = () => {
-    const {history, remove, removeAll, load} = useContext(BuildContext)
+    const {id, history, remove, removeAll, load} = useContext(BuildContext)
 
     if (history.length <= 0) {
         return null
@@ -32,7 +33,16 @@ const BuildHistory = () => {
                         <ConfirmRemoveButton
                             message={"Are you sure you want to remove all items?"}
                         >
-                            <RemoveButton fontSize={24} onClick={() => removeAll()}/>
+                            <span style={{
+                                fontSize: "0.75em",
+                                paddingRight: 8,
+                                color: "gray",
+                                fontStyle: "italic"
+                            }}>
+                                Clear history
+                            </span>
+                            <RemoveButton confirmable={true} fontSize={24}
+                                          onClick={() => removeAll()}/>
                         </ConfirmRemoveButton>
                     </span>
                 </h3>
@@ -40,14 +50,33 @@ const BuildHistory = () => {
             <ListGroup>
                 {
                     history.map(entry =>
-                        <ListGroupItem>
-                            <span
-                                style={{cursor: "pointer"}}
-                                onClick={() => load(entry.id)}
-                            >
-                                {entry.name}
+                        <ListGroupItem key={entry.id} style={{display: "flex", alignItems: "center"}}>
+                            <span style={{display: "inline-block"}}>
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        fontWeight: 700,
+                                        color: id === entry.id ? "#000" : "#0d6efd"
+                                    }}
+                                    onClick={() => load(entry.id)}
+                                >
+                                    {entry.name}
+                                </span>
+                                <span
+                                    style={{
+                                        display: "block",
+                                        order: 2,
+                                        fontSize: "0.5em",
+                                        fontStyle: "italic",
+                                        color: "#505050"
+                                    }}
+                                >
+                                    {entry.id}
+                                </span>
                             </span>
-                            <span className={"float-end"}>
+                            <span
+                                style={{marginLeft: "auto"}}
+                            >
                                 <ConfirmRemoveButton
                                     message={"Are you sure you want to remove this item?"}
                                 >
@@ -59,7 +88,8 @@ const BuildHistory = () => {
                                     }}>
                                         Last Updated: {entry.updatedAt}
                                     </span>
-                                    <RemoveButton onClick={() => remove(entry.id)}/>
+                                    <RemoveButton confirmable={true}
+                                                  onClick={() => remove(entry.id)}/>
                                 </ConfirmRemoveButton>
                             </span>
                         </ListGroupItem>
@@ -125,15 +155,20 @@ const ConfirmRemoveButton = ({
             <>
                 {
                     React.Children.map(children,
-                        child => child.type.name === "RemoveButton" ?
-                            <span
-                                onClickCapture={(e: React.MouseEvent<HTMLSpanElement>) => confirm(e)}
-                                ref={ref}
-                            >
-                                {child}
-                            </span>
-                            :
-                            confirming ? null : child
+                        child => {
+                            return (
+                                child.props.confirmable ?
+                                    <span
+                                        key={uuid_v4()}
+                                        onClickCapture={(e: React.MouseEvent<HTMLSpanElement>) => confirm(e)}
+                                        ref={ref}
+                                    >
+                                        {child}
+                                    </span>
+                                    :
+                                    confirming ? null : child
+                            )
+                        }
                     )
                 }
             </>
@@ -145,16 +180,13 @@ const ConfirmRemoveButton = ({
 const noop = () => {
 }
 
-type RemoveButtonProps =
-    {
-        fontSize?: number, onClick?: MouseEventHandler<SVGSVGElement> | undefined
-    }
+type RemoveButtonProps = {
+    fontSize?: number,
+    onClick?: MouseEventHandler<SVGSVGElement> | undefined,
+    confirmable: boolean
+}
 
-const RemoveButton = (
-    {
-        fontSize = 16, onClick = noop
-    }
-        : RemoveButtonProps) =>
+const RemoveButton = ({fontSize = 16, onClick = noop}: RemoveButtonProps) =>
     <svg xmlns="http://www.w3.org/2000/svg" width={`${fontSize}`} height={`${fontSize}`}
          fill="currentColor" className="bi bi-x-circle"
          viewBox="0 0 16 16"
