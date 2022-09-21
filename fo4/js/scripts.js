@@ -121,9 +121,9 @@ var renderAll = function () {
 
 var calculatePoints = function () {
     var remaining = totalPoints - getAllocatedPoints();
-    //if (includeBobbleheads()) {
-    //    remaining += 7;
-    //}
+    if (includeBobbleheads()) {
+       remaining += 7;
+    }
     if (remaining < 0) {
         remaining = 0;
     }
@@ -139,11 +139,11 @@ var getAllocatedPoints = function () {
 }
 
 var $pointsLeft = $('.points-left');
-        //$includeBobbleheads = $('.include-bobbleheads');
+    $includeBobbleheads = $('.include-bobbleheads');
 
-//var includeBobbleheads = function () {
-//    return $includeBobbleheads.is(':checked');
-//}
+var includeBobbleheads = function () {
+   return $includeBobbleheads.is(':checked');
+}
 
 var pointsRemaining = function () {
     return parseInt($pointsLeft.text());
@@ -194,9 +194,9 @@ $(function () {
 
     renderAll();
 
-    //$includeBobbleheads.on('click', function () {
-    //    renderAll();
-    //});
+    $includeBobbleheads.on('click', function () {
+       renderAll();
+    });
 
     $('.btn-inc').on('click', function () {
         var $li = $(this).parent().parent(),
