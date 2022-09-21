@@ -122,7 +122,7 @@ var renderAll = function () {
 var calculatePoints = function () {
     var remaining = totalPoints - getAllocatedPoints();
     if (includeBobbleheads()) {
-       remaining += 7;
+       remaining += 8;
     }
     if (remaining < 0) {
         remaining = 0;
