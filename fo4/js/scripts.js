@@ -86,8 +86,11 @@ var requiredLevel = function () {
     }
 
     var remaining = totalPoints - getAllocatedPoints();
-    if (remaining < 0) {
-        total += remaining * -1;
+    if (includeBobbleheads()) {
+        remaining += 8
+    }
+    if (remaining <= 0) {
+        total += 1 + remaining * -1;
     }
 
     var maxLevel = 0;
@@ -169,6 +172,18 @@ var renderSummary = function () {
     $('[rel="popover"]').popover();
 }
 
+var getSPECIALMinMax = function() {
+    var min = 1;
+    var max = 10;
+
+    if (includeBobbleheads()) {
+        min = 2;
+        max = 11;
+    }
+
+    return {min, max}
+}
+
 $(function () {
     var hash = window.location.hash.replace('#', '');
     if (hash.length > 0) {
@@ -195,19 +210,25 @@ $(function () {
     renderAll();
 
     $includeBobbleheads.on('click', function () {
-       renderAll();
+        var valShift = -1;
+        if (includeBobbleheads()) {
+            valShift = 1;
+        }
+        var $inputs = $(".list-special>li>span>input")
+        $inputs.attr(getSPECIALMinMax());
+        $inputs.val( function(i, val) {
+            return parseInt(val, 10) + valShift;
+        });
+        renderAll();
     });
 
     $('.btn-inc').on('click', function () {
+        var {max} = getSPECIALMinMax()
         var $li = $(this).parent().parent(),
             $input = $li.find('input'),
-            value = parseInt($input.val()),
-            remaining = totalPoints - getAllocatedPoints();
+            value = parseInt($input.val());
 
-        //if (remaining === 0)
-        //    return;
-
-        if (value < 10) {
+        if (value < max) {
             $input.val(value + 1);
         }
 
@@ -215,12 +236,13 @@ $(function () {
     });
 
     $('.btn-dec').on('click', function () {
+        var {min} = getSPECIALMinMax()
         var $li = $(this).parent().parent(),
             $input = $li.find('input'),
             value = parseInt($input.val()),
             special = $li.data('special');
 
-        if (value > 1) {
+        if (value > min) {
             $input.val(value - 1);
 
             for (var i = 0; i < perks.length; ++i) {
