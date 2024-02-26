@@ -1599,7 +1599,7 @@
                     {
                         rank: 4,
                         level: 37,
-                        description: 'You find even more ammunition in containers.'
+                        description: 'There is a chance to gain ammo when firing the last round in your clip.'
                     }
                 ]
             },
