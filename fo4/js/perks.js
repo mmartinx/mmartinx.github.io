@@ -1,4 +1,4 @@
-﻿var perks = [
+﻿const perks = [
     {
         special: 'st',
         perks: [
